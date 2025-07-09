@@ -1,0 +1,19 @@
+## TODO
+- [ ] Use Controller for All Views
+	- [x] Aluno
+	- [x] Professor
+	- [x] Turma
+	- [x] Aula
+	- [x] Funcionario
+	- [ ] Gasto
+	- [ ] Relatorio?
+- [ ] Add Update in DAOs
+- [ ] Data validation (for email, telefone, etc)
+- [ ] Substitute hardcoded listing options in View files
+- [ ] Review exceptions
+- [ ] Review TODOs in View files
+- [ ] .gitignore
+- [ ] CRUD functions feedback to view
+- [ ] Set ID to autoincrement
+- [ ] Use case views
+- [ ] ORM

@@ -1,0 +1,45 @@
+# NetBeans specific
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+*.bak
+
+# Ignore NetBeans log files
+nbproject/Makefile-*
+nbproject/Package-*
+nbproject/configs/
+nbproject/genfiles.properties
+
+# Compiled class files
+*.class
+
+# Backup files
+*~
+*.orig
+*.rej
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# IDE config (optional - if you don’t want to share IDE settings)
+*.iml
+.idea/
+*.ipr
+*.iws
+
+# Maven or Gradle
+target/
+out/
+*.jar
+*.war
+*.ear
+
+# Custom files
+*.db
