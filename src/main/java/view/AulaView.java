@@ -343,6 +343,7 @@ public class AulaView extends javax.swing.JFrame {
     private void carregarProfessores() {
         List<model.Professor> professores = professorController.listarTodosProfessores();
         cmbProfessor.removeAllItems();
+        cmbProfessor.addItem(null);
         for (model.Professor p : professores) {
             /* 
             Em Professor.java:
