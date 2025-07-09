@@ -198,7 +198,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNotaFinalActionPerformed
 
     private void btnRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatoriosActionPerformed
-        new RelatoriosView().setVisible(true);
+        new RelatorioView().setVisible(true);
     }//GEN-LAST:event_btnRelatoriosActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed

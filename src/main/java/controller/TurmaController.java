@@ -43,4 +43,8 @@ public class TurmaController {
     public void excluirTurma(int id) {
         turmaDAO.excluir(id);
     }
+    
+    public void registrarNota(int turmaId, int alunoMatricula, double nota) {
+        turmaDAO.registrarNota(turmaId, alunoMatricula, nota);
+    }
 }

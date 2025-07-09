@@ -4,22 +4,24 @@
  */
 package view;
 
-import dao.RelatorioDAO;
+import controller.RelatorioController;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
+import java.util.logging.Logger;
 
 /**
  *
  * @author davis
  */
-public class RelatoriosView extends javax.swing.JFrame {
+public class RelatorioView extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RelatoriosView.class.getName());
+    private RelatorioController relatorioController = new RelatorioController();
+    private static final Logger logger = Logger.getLogger(RelatorioView.class.getName());
 
     /**
-     * Creates new form RelatoriosView
+     * Creates new form RelatorioView
      */
-    public RelatoriosView() {
+    public RelatorioView() {
         initComponents();
         preencherComboBoxMes();
         preencherComboBoxAno();
@@ -157,9 +159,9 @@ public class RelatoriosView extends javax.swing.JFrame {
             int mes = Integer.parseInt(mesStr.substring(0, 2));
             int ano = Integer.parseInt((String) cmbAno.getSelectedItem());
 
-            double valorArrecadado = RelatorioDAO.calcularValorArrecadado(mes, ano);
-            double gastoRealizado = RelatorioDAO.calcularGastoRealizado(mes, ano);
-            double gastoPrevisto = RelatorioDAO.calcularGastoPrevisto(mes, ano, 50.0); // ajuste se valorHora for variável
+            double valorArrecadado = relatorioController.calcularValorArrecadado(mes, ano);
+            double gastoRealizado = relatorioController.calcularGastoRealizado(mes, ano);
+            double gastoPrevisto = relatorioController.calcularGastoPrevisto(mes, ano, 50.0); // ajuste se valorHora for variável
 
             txtValorArrecadado.setText(String.format("R$ %.2f", valorArrecadado));
             txtGastoRealizado.setText(String.format("R$ %.2f", gastoRealizado));
@@ -171,7 +173,7 @@ public class RelatoriosView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGerarRelatorioActionPerformed
 
     private void btnVoltar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltar1ActionPerformed
-        dispose(); // Fecha a janela atual
+        this.dispose(); // Fecha a janela atual
     }//GEN-LAST:event_btnVoltar1ActionPerformed
 
     /**
@@ -196,14 +198,12 @@ public class RelatoriosView extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new RelatoriosView().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new RelatorioView().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGerarRelatorio;
-    private javax.swing.JButton btnVoltar;
     private javax.swing.JButton btnVoltar1;
-    private javax.swing.JButton btnVoltar3;
     private javax.swing.JComboBox<String> cmbAno;
     private javax.swing.JComboBox<String> cmbMes;
     private javax.swing.JLabel jLabel1;

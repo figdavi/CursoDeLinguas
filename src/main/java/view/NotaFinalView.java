@@ -7,6 +7,8 @@ package view;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import java.util.logging.Logger;
+import controller.TurmaController;
 
 /**
  *
@@ -14,9 +16,9 @@ import javax.swing.JOptionPane;
  */
 public class NotaFinalView extends javax.swing.JFrame {
     
-    private final dao.TurmaDAO turmaDAO = new dao.TurmaDAO();
-    private model.Turma turmaSelecionada;
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(NotaFinalView.class.getName());
+    private TurmaController turmaController = new TurmaController();
+    private model.Turma turmaSelecionada;// *
+    private static final Logger logger = Logger.getLogger(NotaFinalView.class.getName());
 
     /**
      * Creates new form NotaFinalView
@@ -38,7 +40,7 @@ public class NotaFinalView extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        cmbTurma = new javax.swing.JComboBox<>();
+        cmbTurma = new javax.swing.JComboBox();
         scrollNotas = new javax.swing.JScrollPane();
         tabelaNotas = new javax.swing.JTable();
         btnSalvar = new javax.swing.JButton();
@@ -48,7 +50,7 @@ public class NotaFinalView extends javax.swing.JFrame {
 
         jLabel1.setText("Turma:");
 
-        cmbTurma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbTurma.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbTurma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbTurmaActionPerformed(evt);
@@ -127,9 +129,7 @@ public class NotaFinalView extends javax.swing.JFrame {
     private void cmbTurmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTurmaActionPerformed
         int index = cmbTurma.getSelectedIndex();
         if (index != -1) {
-            String selecionado = (String) cmbTurma.getSelectedItem();
-            int idTurma = Integer.parseInt(selecionado.split(" - ")[0]);
-            turmaSelecionada = turmaDAO.buscarPorId(idTurma);
+            turmaSelecionada = (model.Turma) cmbTurma.getSelectedItem();
             carregarNotasNaTabela();
         }
     }//GEN-LAST:event_cmbTurmaActionPerformed
@@ -147,14 +147,14 @@ public class NotaFinalView extends javax.swing.JFrame {
             int matricula = Integer.parseInt(alunoStr.split(" - ")[0]);
             double nota = notaStr.isEmpty() ? 0.0 : Double.parseDouble(notaStr);
 
-            new dao.TurmaDAO().registrarNota(turmaSelecionada.getId(), matricula, nota);
+            turmaController.registrarNota(turmaSelecionada.getId(), matricula, nota);
         }
 
         JOptionPane.showMessageDialog(this, "Notas salvas com sucesso!");
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
-        dispose(); // Fecha a janela atual
+        this.dispose(); // Fecha a janela atual
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     /**
@@ -186,18 +186,18 @@ public class NotaFinalView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnVoltar;
-    private javax.swing.JComboBox<String> cmbTurma;
+    private javax.swing.JComboBox cmbTurma;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane scrollNotas;
     private javax.swing.JTable tabelaNotas;
     // End of variables declaration//GEN-END:variables
 
     private void carregarTurmas() {
-        List<model.Turma> turmas = turmaDAO.listarTodos();
+        List<model.Turma> turmas = turmaController.listarTodasTurmas();
         cmbTurma.removeAllItems();
 
         for (model.Turma t : turmas) {
-            cmbTurma.addItem(t.getId() + " - " + t.getLingua() + " (" + t.getNivel() + ")");
+            cmbTurma.addItem(t);
         }
 
         cmbTurma.setSelectedIndex(-1); // Nenhuma selecionada por padrão

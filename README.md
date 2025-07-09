@@ -1,12 +1,15 @@
 ## TODO
-- [ ] Use Controller for All Views
+- [x] Use Controller for All Views
 	- [x] Aluno
 	- [x] Professor
 	- [x] Turma
 	- [x] Aula
 	- [x] Funcionario
 	- [x] Gasto
-	- [ ] Relatorio?
+	- [x] Relatorio
+	- [x] Notas
+- [ ] Substitute hardcoded strings with .toString() in View files
+- [ ] Fix Relatorio
 - [ ] Add Update in DAOs
 - [ ] Data validation (for email, telefone, etc)
 - [ ] Substitute hardcoded listing options in View files

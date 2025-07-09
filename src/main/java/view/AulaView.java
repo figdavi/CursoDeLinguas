@@ -290,7 +290,7 @@ public class AulaView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnVoltar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltar1ActionPerformed
-        dispose(); // Fecha a janela atual
+        this.dispose(); // Fecha a janela atual
     }//GEN-LAST:event_btnVoltar1ActionPerformed
 
     /**
