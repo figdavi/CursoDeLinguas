@@ -4,8 +4,8 @@
  */
 package view;
 
-import dao.GastoDAO;
-import model.Gasto;
+import java.util.logging.Logger;
+import controller.GastoController;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -16,8 +16,8 @@ import javax.swing.JOptionPane;
  * @author davis
  */
 public class GastoView extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GastoView.class.getName());
+    private GastoController gastoController = new GastoController();
+    private static final Logger logger = Logger.getLogger(GastoView.class.getName());
 
     /**
      * Creates new form GastoView
@@ -188,8 +188,8 @@ public class GastoView extends javax.swing.JFrame {
             double valor = Double.parseDouble(txtValor.getText().trim());
             LocalDate data = LocalDate.parse(txtData.getText().trim(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-            Gasto gasto = new Gasto(id, descricao, valor, data);
-            new GastoDAO().atualizar(gasto);
+            gastoController.atualizarGasto(id, descricao, valor, data);
+            
             atualizarTabela();
             limparCampos();
         } catch (NumberFormatException e) {
@@ -201,7 +201,7 @@ public class GastoView extends javax.swing.JFrame {
         int linha = tabelaGastos.getSelectedRow();
         if (linha != -1) {
             int id = (int) tabelaGastos.getValueAt(linha, 0);
-            new GastoDAO().excluir(id);
+            gastoController.excluirGasto(id);
             atualizarTabela();
             limparCampos();
         } else {
@@ -220,8 +220,8 @@ public class GastoView extends javax.swing.JFrame {
             double valor = Double.parseDouble(txtValor.getText().trim());
             LocalDate data = LocalDate.parse(txtData.getText().trim(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-            Gasto gasto = new Gasto(id, descricao, valor, data);
-            new GastoDAO().inserir(gasto);
+            gastoController.inserirGasto(id, descricao, valor, data);
+            
             atualizarTabela();
             limparCampos();
         } catch (NumberFormatException e) {
@@ -288,14 +288,14 @@ public class GastoView extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void atualizarTabela() {
-        List<Gasto> gastos = new GastoDAO().listarTodos();
+        List<model.Gasto> gastos = gastoController.listarTodosGastos();
         String[] colunas = { "ID", "Descrição", "Valor", "Data" };
         Object[][] dados = new Object[gastos.size()][4];
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         for (int i = 0; i < gastos.size(); i++) {
-            Gasto g = gastos.get(i);
+            model.Gasto g = gastos.get(i);
             dados[i][0] = g.getId();
             dados[i][1] = g.getDescricao();
             dados[i][2] = g.getValor();

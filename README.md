@@ -5,7 +5,7 @@
 	- [x] Turma
 	- [x] Aula
 	- [x] Funcionario
-	- [ ] Gasto
+	- [x] Gasto
 	- [ ] Relatorio?
 - [ ] Add Update in DAOs
 - [ ] Data validation (for email, telefone, etc)
