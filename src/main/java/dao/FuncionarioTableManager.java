@@ -15,9 +15,9 @@ public class FuncionarioTableManager {
             CREATE TABLE IF NOT EXISTS funcionario (
                 id INTEGER PRIMARY KEY,
                 nome TEXT NOT NULL,
-                endereco TEXT,
-                telefone TEXT,
-                salario REAL,
+                endereco TEXT NOT NULL,
+                telefone TEXT NOT NULL,
+                salario REAL NOT NULL,
                 cargo TEXT NOT NULL
             );
         """;

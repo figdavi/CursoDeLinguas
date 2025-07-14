@@ -5,7 +5,6 @@
 package dao;
 
 import java.sql.*;
-import java.time.YearMonth;
 
 public class RelatorioDAO {
 
@@ -19,10 +18,8 @@ public class RelatorioDAO {
 
             pstmt.setString(1, String.format("%02d", mes));
             pstmt.setString(2, String.valueOf(ano));
-
             ResultSet rs = pstmt.executeQuery();
             return rs.next() ? rs.getDouble(1) : 0.0;
-
         } catch (SQLException e) {
             System.out.println("Erro ao calcular valor arrecadado: " + e.getMessage());
             return 0.0;
@@ -45,17 +42,16 @@ public class RelatorioDAO {
 
             pstmt.setString(1, String.format("%02d", mes));
             pstmt.setString(2, String.valueOf(ano));
-
             ResultSet rs = pstmt.executeQuery();
             return rs.next() ? rs.getDouble(1) : 0.0;
-
         } catch (SQLException e) {
             System.out.println("Erro ao calcular gasto realizado: " + e.getMessage());
             return 0.0;
         }
     }
 
-    public static double calcularGastoPrevisto(int mes, int ano, double valorHora) {
+    // Gasto ainda a acontecer = aulas agendadas SEM professor (usar valorHoraMédio)
+    public static double calcularGastoPrevisto(int mes, int ano, double valorHoraMedio) {
         String sql = """
             SELECT SUM((julianday(horaFim) - julianday(horaInicio)) * 24)
             FROM aula
@@ -68,11 +64,9 @@ public class RelatorioDAO {
 
             pstmt.setString(1, String.format("%02d", mes));
             pstmt.setString(2, String.valueOf(ano));
-
             ResultSet rs = pstmt.executeQuery();
             double horas = rs.next() ? rs.getDouble(1) : 0.0;
-            return horas * valorHora;
-
+            return horas * valorHoraMedio;
         } catch (SQLException e) {
             System.out.println("Erro ao calcular gasto previsto: " + e.getMessage());
             return 0.0;

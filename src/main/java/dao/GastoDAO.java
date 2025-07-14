@@ -5,7 +5,6 @@
 package dao;
 
 import model.Gasto;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,8 +12,7 @@ import java.util.List;
 
 public class GastoDAO {
 
-    // INSERIR
-    public void inserir(Gasto gasto) {
+    public boolean inserir(Gasto gasto) {
         String sql = "INSERT INTO gasto (id, descricao, valor, data) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -25,15 +23,15 @@ public class GastoDAO {
             pstmt.setDouble(3, gasto.getValor());
             pstmt.setString(4, gasto.getData().toString());
 
-            pstmt.executeUpdate();
-            System.out.println("Gasto inserido com sucesso.");
+            int linhas = pstmt.executeUpdate();
+            return linhas > 0;
 
         } catch (SQLException e) {
             System.out.println("Erro ao inserir gasto: " + e.getMessage());
+            return false;
         }
     }
 
-    // LISTAR TODOS
     public List<Gasto> listarTodos() {
         List<Gasto> gastos = new ArrayList<>();
         String sql = "SELECT * FROM gasto";
@@ -55,12 +53,34 @@ public class GastoDAO {
         } catch (SQLException e) {
             System.out.println("Erro ao listar gastos: " + e.getMessage());
         }
-
         return gastos;
     }
 
-    // ATUALIZAR
-    public void atualizar(Gasto gasto) {
+    public Gasto buscarPorId(int idBusca) {
+        String sql = "SELECT * FROM gasto WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, idBusca);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return new Gasto(
+                        rs.getInt("id"),
+                        rs.getString("descricao"),
+                        rs.getDouble("valor"),
+                        LocalDate.parse(rs.getString("data"))
+                );
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar gasto: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public boolean atualizar(Gasto gasto) {
         String sql = "UPDATE gasto SET descricao=?, valor=?, data=? WHERE id=?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -72,19 +92,15 @@ public class GastoDAO {
             pstmt.setInt(4, gasto.getId());
 
             int linhas = pstmt.executeUpdate();
-            if (linhas > 0) {
-                System.out.println("Gasto atualizado com sucesso.");
-            } else {
-                System.out.println("Gasto não encontrado.");
-            }
+            return linhas > 0;
 
         } catch (SQLException e) {
             System.out.println("Erro ao atualizar gasto: " + e.getMessage());
+            return false;
         }
     }
 
-    // EXCLUIR
-    public void excluir(int id) {
+    public boolean excluir(int id) {
         String sql = "DELETE FROM gasto WHERE id=?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -92,15 +108,11 @@ public class GastoDAO {
 
             pstmt.setInt(1, id);
             int linhas = pstmt.executeUpdate();
-
-            if (linhas > 0) {
-                System.out.println("Gasto excluído.");
-            } else {
-                System.out.println("Gasto não encontrado.");
-            }
+            return linhas > 0;
 
         } catch (SQLException e) {
             System.out.println("Erro ao excluir gasto: " + e.getMessage());
+            return false;
         }
     }
 }

@@ -34,7 +34,7 @@ public class Aluno {
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -46,6 +46,10 @@ public class Aluno {
     @Override
     public int hashCode() {
         return Integer.hashCode(matricula);
-}
-
+    }
+    
+    @Override
+    public String toString() {
+        return matricula + " - " + nome;
+    }
 }

@@ -203,25 +203,30 @@ public class ProfessorView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        try {
+         try {
             int matricula = Integer.parseInt(txtMatricula.getText().trim());
             String nome = txtNome.getText().trim();
             String endereco = txtEndereco.getText().trim();
             String telefone = txtTelefone.getText().trim();
             double valorHora = Double.parseDouble(txtValorHora.getText().trim());
-            
             String linguasTexto = txtLinguas.getText().trim();
-            List<String> linguas = List.of(linguasTexto.split("\\s*,\\s*")); // separa por vírgulas
-            
-            professorController.inserirProfessor(matricula, 
-                    nome, 
-                    endereco, 
-                    telefone, 
-                    valorHora, 
-                    linguas);
-            
-            atualizarTabela();
-            limparCampos();
+
+            List<model.Professor.Lingua> linguas;
+            try {
+                linguas = parseLinguas(linguasTexto);
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(this, "Língua(s) inválida(s). Use: INGLES, FRANCES, ESPANHOL.");
+                return;
+            }
+
+            String resultado = professorController.inserirProfessor(
+                matricula, nome, endereco, telefone, valorHora, linguas);
+
+            JOptionPane.showMessageDialog(this, resultado);
+            if (resultado.contains("sucesso")) {
+                atualizarTabela();
+                limparCampos();
+            }
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Matrícula ou Valor/Hora inválidos.");
@@ -229,42 +234,51 @@ public class ProfessorView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
-        try {
-            int matricula;
-            matricula = Integer.parseInt(txtMatricula.getText().trim());
+       try {
+            int matricula = Integer.parseInt(txtMatricula.getText().trim());
             String nome = txtNome.getText().trim();
             String endereco = txtEndereco.getText().trim();
             String telefone = txtTelefone.getText().trim();
-            double valorHora;
-            valorHora = Double.parseDouble(txtValorHora.getText().trim());
-
+            double valorHora = Double.parseDouble(txtValorHora.getText().trim());
             String linguasTexto = txtLinguas.getText().trim();
-            List<String> linguas = List.of(linguasTexto.split("\\s*,\\s*"));
 
-            professorController.atualizarProfessor(matricula, 
-                    nome, 
-                    endereco, 
-                    telefone, 
-                    valorHora, 
-                    linguas);
-             
-            atualizarTabela();
-            limparCampos();
-            txtMatricula.setEditable(true);
+            List<model.Professor.Lingua> linguas;
+            try {
+                linguas = parseLinguas(linguasTexto);
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(this, "Língua(s) inválida(s). Use: INGLES, FRANCES, ESPANHOL.");
+                return;
+            }
+
+            String resultado = professorController.atualizarProfessor(
+                matricula, nome, endereco, telefone, valorHora, linguas);
+
+            JOptionPane.showMessageDialog(this, resultado);
+            if (resultado.contains("sucesso")) {
+                atualizarTabela();
+                limparCampos();
+                txtMatricula.setEditable(true);
+            }
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao atualizar professor.");
+            JOptionPane.showMessageDialog(this, "Matrícula ou Valor/Hora inválidos.");
         }
     }//GEN-LAST:event_btnAtualizarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int linha = tabelaProfessores.getSelectedRow();
-
         if (linha != -1) {
             int matricula = Integer.parseInt(tabelaProfessores.getValueAt(linha, 0).toString());
-            professorController.excluirProfessor(matricula);
-            atualizarTabela();
-            limparCampos();
+            int confirm = JOptionPane.showConfirmDialog(this, "Deseja excluir o professor selecionado?",
+                    "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                String resultado = professorController.excluirProfessor(matricula);
+                JOptionPane.showMessageDialog(this, resultado);
+                if (resultado.contains("sucesso")) {
+                    atualizarTabela();
+                    limparCampos();
+                }
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Selecione um professor para excluir.");
         }
@@ -284,7 +298,6 @@ public class ProfessorView extends javax.swing.JFrame {
             txtTelefone.setText(tabelaProfessores.getValueAt(linha, 3).toString());
             txtValorHora.setText(tabelaProfessores.getValueAt(linha, 4).toString());
             txtLinguas.setText(tabelaProfessores.getValueAt(linha, 5).toString());
-
             txtMatricula.setEditable(false);
         }
     }//GEN-LAST:event_tabelaProfessoresMouseClicked
@@ -352,7 +365,8 @@ public class ProfessorView extends javax.swing.JFrame {
             dados[i][2] = p.getEndereco();
             dados[i][3] = p.getTelefone();
             dados[i][4] = p.getValorHora();
-            dados[i][5] = String.join(", ", p.getLinguas());
+            // Exibe como "INGLES, ESPANHOL"
+            dados[i][5] = String.join(", ", p.getLinguas().stream().map(Enum::name).toList());
         }
 
         tabelaProfessores.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
@@ -366,5 +380,13 @@ public class ProfessorView extends javax.swing.JFrame {
         txtValorHora.setText("");
         txtLinguas.setText("");
         txtMatricula.setEditable(true);
+    }
+
+    private List<model.Professor.Lingua> parseLinguas(String linguasTexto) {
+        List<model.Professor.Lingua> linguas = new java.util.ArrayList<>();
+        for (String s : linguasTexto.split("\\s*,\\s*")) {
+            linguas.add(model.Professor.Lingua.valueOf(s.trim().toUpperCase()));
+        }
+        return linguas;
     }
 }

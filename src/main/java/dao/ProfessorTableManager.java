@@ -15,10 +15,10 @@ public class ProfessorTableManager {
             CREATE TABLE IF NOT EXISTS professor (
                 matricula INTEGER PRIMARY KEY,
                 nome TEXT NOT NULL,
-                endereco TEXT,
-                telefone TEXT,
-                valorHora REAL,
-                linguas TEXT
+                endereco TEXT NOT NULL,
+                telefone TEXT NOT NULL,
+                valorHora REAL NOT NULL,
+                linguas TEXT NOT NULL
             );
         """;
 

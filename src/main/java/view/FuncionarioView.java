@@ -26,6 +26,7 @@ public class FuncionarioView extends javax.swing.JFrame {
     public FuncionarioView() {
         initComponents();
         cmbCargo.setModel(new javax.swing.DefaultComboBoxModel<>(Cargo.values()));
+        cmbCargo.setSelectedIndex(-1);
         atualizarTabela();
     }
 
@@ -56,7 +57,7 @@ public class FuncionarioView extends javax.swing.JFrame {
         btnLimpar = new javax.swing.JButton();
         scrollFuncionarios = new javax.swing.JScrollPane();
         tabelaFuncionarios = new javax.swing.JTable();
-        btnVoltar1 = new javax.swing.JButton();
+        btnVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -120,10 +121,10 @@ public class FuncionarioView extends javax.swing.JFrame {
         });
         scrollFuncionarios.setViewportView(tabelaFuncionarios);
 
-        btnVoltar1.setText("Voltar");
-        btnVoltar1.addActionListener(new java.awt.event.ActionListener() {
+        btnVoltar.setText("Voltar");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVoltar1ActionPerformed(evt);
+                btnVoltarActionPerformed(evt);
             }
         });
 
@@ -145,7 +146,7 @@ public class FuncionarioView extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnLimpar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnVoltar1))
+                                .addComponent(btnVoltar))
                             .addComponent(scrollFuncionarios, javax.swing.GroupLayout.PREFERRED_SIZE, 612, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 16, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
@@ -198,7 +199,7 @@ public class FuncionarioView extends javax.swing.JFrame {
                     .addComponent(btnExcluir)
                     .addComponent(btnLimpar)
                     .addComponent(btnAtualizar)
-                    .addComponent(btnVoltar1))
+                    .addComponent(btnVoltar))
                 .addGap(18, 18, 18)
                 .addComponent(scrollFuncionarios, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(33, Short.MAX_VALUE))
@@ -209,6 +210,16 @@ public class FuncionarioView extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         try {
+            if (txtID.getText().trim().isEmpty() ||
+                txtNome.getText().trim().isEmpty() ||
+                txtEndereco.getText().trim().isEmpty() ||
+                txtTelefone.getText().trim().isEmpty() ||
+                txtSalario.getText().trim().isEmpty() ||
+                cmbCargo.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
+                return;
+            }
+
             int id = Integer.parseInt(txtID.getText().trim());
             String nome = txtNome.getText().trim();
             String endereco = txtEndereco.getText().trim();
@@ -216,17 +227,30 @@ public class FuncionarioView extends javax.swing.JFrame {
             double salario = Double.parseDouble(txtSalario.getText().trim());
             Cargo cargo = (Cargo) cmbCargo.getSelectedItem();
 
+            String resultado = funcionarioController.inserirFuncionario(id, nome, endereco, telefone, salario, cargo);
+            JOptionPane.showMessageDialog(this, resultado);
 
-            funcionarioController.inserirFuncionario(id, nome, endereco, telefone, salario, cargo);
-            atualizarTabela();
-            limparCampos();
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage());
+            if (resultado.contains("sucesso")) {
+                atualizarTabela();
+                limparCampos();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID ou Salário inválido.");
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         try {
+            if (txtID.getText().trim().isEmpty() ||
+                txtNome.getText().trim().isEmpty() ||
+                txtEndereco.getText().trim().isEmpty() ||
+                txtTelefone.getText().trim().isEmpty() ||
+                txtSalario.getText().trim().isEmpty() ||
+                cmbCargo.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
+                return;
+            }
+
             int id = Integer.parseInt(txtID.getText().trim());
             String nome = txtNome.getText().trim();
             String endereco = txtEndereco.getText().trim();
@@ -234,24 +258,33 @@ public class FuncionarioView extends javax.swing.JFrame {
             double salario = Double.parseDouble(txtSalario.getText().trim());
             Cargo cargo = (Cargo) cmbCargo.getSelectedItem();
 
+            String resultado = funcionarioController.atualizarFuncionario(id, nome, endereco, telefone, salario, cargo);
+            JOptionPane.showMessageDialog(this, resultado);
 
-            funcionarioController.atualizarFuncionario(id, nome, endereco, telefone, salario, cargo);
-            atualizarTabela();
-            limparCampos();
-            txtID.setEditable(true);
-
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao atualizar: " + e.getMessage());
+            if (resultado.contains("sucesso")) {
+                atualizarTabela();
+                limparCampos();
+                txtID.setEditable(true);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID ou Salário inválido.");
         }
     }//GEN-LAST:event_btnAtualizarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int linha = tabelaFuncionarios.getSelectedRow();
         if (linha != -1) {
-            int id = (int) tabelaFuncionarios.getValueAt(linha, 0);
-            funcionarioController.excluirFuncionario(id);
-            atualizarTabela();
-            limparCampos();
+            int id = Integer.parseInt(tabelaFuncionarios.getValueAt(linha, 0).toString());
+            int confirm = JOptionPane.showConfirmDialog(this, "Deseja excluir o funcionário selecionado?", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                String resultado = funcionarioController.excluirFuncionario(id);
+                JOptionPane.showMessageDialog(this, resultado);
+
+                if (resultado.contains("sucesso")) {
+                    atualizarTabela();
+                    limparCampos();
+                }
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Selecione um funcionário para excluir.");
         }
@@ -269,14 +302,24 @@ public class FuncionarioView extends javax.swing.JFrame {
             txtEndereco.setText(tabelaFuncionarios.getValueAt(linha, 2).toString());
             txtTelefone.setText(tabelaFuncionarios.getValueAt(linha, 3).toString());
             txtSalario.setText(tabelaFuncionarios.getValueAt(linha, 4).toString());
-            cmbCargo.setSelectedItem(tabelaFuncionarios.getValueAt(linha, 5).toString());
-            txtID.setEditable(false); // evitar edição do ID
+
+            // Seleciona corretamente o Cargo no ComboBox
+            String cargoStr = tabelaFuncionarios.getValueAt(linha, 5).toString();
+            for (int i = 0; i < cmbCargo.getItemCount(); i++) {
+                Cargo c = (Cargo) cmbCargo.getItemAt(i);
+                if (c.toString().equals(cargoStr)) {
+                    cmbCargo.setSelectedIndex(i);
+                    break;
+                }
+            }
+
+            txtID.setEditable(false);
         }
     }//GEN-LAST:event_tabelaFuncionariosMouseClicked
 
-    private void btnVoltar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltar1ActionPerformed
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose(); // Fecha a janela atual
-    }//GEN-LAST:event_btnVoltar1ActionPerformed
+    }//GEN-LAST:event_btnVoltarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -308,7 +351,7 @@ public class FuncionarioView extends javax.swing.JFrame {
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLimpar;
-    private javax.swing.JButton btnVoltar1;
+    private javax.swing.JButton btnVoltar;
     private javax.swing.JComboBox cmbCargo;
     private javax.swing.JLabel lbEndereco;
     private javax.swing.JLabel lbLinguas;
@@ -326,7 +369,7 @@ public class FuncionarioView extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void atualizarTabela() {
-        List<model.Funcionario> funcionarios = new dao.FuncionarioDAO().listarTodos();
+        List<model.Funcionario> funcionarios = funcionarioController.listarTodosFuncionarios();
         String[] colunas = { "ID", "Nome", "Endereço", "Telefone", "Salário", "Cargo" };
         Object[][] dados = new Object[funcionarios.size()][6];
 
@@ -352,5 +395,4 @@ public class FuncionarioView extends javax.swing.JFrame {
         cmbCargo.setSelectedIndex(-1);
         txtID.setEditable(true);
     }
-
 }

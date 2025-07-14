@@ -28,7 +28,6 @@ public class GastoView extends javax.swing.JFrame {
         txtID.setEditable(true);
     }
 
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -56,7 +55,7 @@ public class GastoView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lbNome.setText("Descrição::");
+        lbNome.setText("Descrição:");
 
         lbEndereco.setText("Valor:");
 
@@ -183,17 +182,27 @@ public class GastoView extends javax.swing.JFrame {
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         try {
+            if (txtID.getText().trim().isEmpty() ||
+                txtDescricao.getText().trim().isEmpty() ||
+                txtValor.getText().trim().isEmpty() ||
+                txtData.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
+                return;
+            }
             int id = Integer.parseInt(txtID.getText().trim());
             String descricao = txtDescricao.getText().trim();
             double valor = Double.parseDouble(txtValor.getText().trim());
             LocalDate data = LocalDate.parse(txtData.getText().trim(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-            gastoController.atualizarGasto(id, descricao, valor, data);
-            
-            atualizarTabela();
-            limparCampos();
+            String msg = gastoController.atualizarGasto(id, descricao, valor, data);
+            JOptionPane.showMessageDialog(this, msg);
+            if (msg.contains("sucesso")) {
+                atualizarTabela();
+                limparCampos();
+                txtID.setEditable(true);
+            }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao atualizar: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "ID ou valor inválido.");
         }
     }//GEN-LAST:event_btnAtualizarActionPerformed
 
@@ -201,9 +210,15 @@ public class GastoView extends javax.swing.JFrame {
         int linha = tabelaGastos.getSelectedRow();
         if (linha != -1) {
             int id = (int) tabelaGastos.getValueAt(linha, 0);
-            gastoController.excluirGasto(id);
-            atualizarTabela();
-            limparCampos();
+            int confirm = JOptionPane.showConfirmDialog(this, "Deseja excluir o gasto selecionado?", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                String msg = gastoController.excluirGasto(id);
+                JOptionPane.showMessageDialog(this, msg);
+                if (msg.contains("sucesso")) {
+                    atualizarTabela();
+                    limparCampos();
+                }
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Selecione um gasto para excluir.");
         }
@@ -215,17 +230,26 @@ public class GastoView extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         try {
+            if (txtID.getText().trim().isEmpty() ||
+                txtDescricao.getText().trim().isEmpty() ||
+                txtValor.getText().trim().isEmpty() ||
+                txtData.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
+                return;
+            }
             int id = Integer.parseInt(txtID.getText().trim());
             String descricao = txtDescricao.getText().trim();
             double valor = Double.parseDouble(txtValor.getText().trim());
             LocalDate data = LocalDate.parse(txtData.getText().trim(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-            gastoController.inserirGasto(id, descricao, valor, data);
-            
-            atualizarTabela();
-            limparCampos();
+            String msg = gastoController.inserirGasto(id, descricao, valor, data);
+            JOptionPane.showMessageDialog(this, msg);
+            if (msg.contains("sucesso")) {
+                atualizarTabela();
+                limparCampos();
+            }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "ID ou valor inválido.");
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
@@ -312,5 +336,4 @@ public class GastoView extends javax.swing.JFrame {
         txtData.setText("");
         txtID.setEditable(true);
     }
-
 }

@@ -8,21 +8,29 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JOptionPane;
-import java.util.logging.Logger;
+import java.util.Arrays;
 import controller.TurmaController;
-
+import java.util.logging.Logger;
+import model.Turma;
 
 /**
  *
  * @author davis
  */
 public class TurmaView extends javax.swing.JFrame {
-
     private TurmaController turmaController = new TurmaController();
     private static final Logger logger = Logger.getLogger(TurmaView.class.getName());
 
     public TurmaView() {
         initComponents();
+        comboLingua.removeAllItems();
+        for (Turma.Lingua l : Turma.Lingua.values()) comboLingua.addItem(l.toString());
+        comboLingua.setSelectedIndex(-1);
+
+        comboNivel.removeAllItems();
+        for (Turma.Nivel n : Turma.Nivel.values()) comboNivel.addItem(n.toString());
+        comboNivel.setSelectedIndex(-1);
+
         atualizarTabela();
     }
 
@@ -42,7 +50,6 @@ public class TurmaView extends javax.swing.JFrame {
         lbNivel = new javax.swing.JLabel();
         lbPreco = new javax.swing.JLabel();
         txtPreco = new javax.swing.JTextField();
-        txtLingua = new javax.swing.JTextField();
         txtDataFim = new javax.swing.JTextField();
         txtDataInicio = new javax.swing.JTextField();
         txtId = new javax.swing.JTextField();
@@ -54,6 +61,7 @@ public class TurmaView extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tabelaTurmas = new javax.swing.JTable();
         btnVoltar3 = new javax.swing.JButton();
+        comboLingua = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,8 +88,6 @@ public class TurmaView extends javax.swing.JFrame {
                 txtIdActionPerformed(evt);
             }
         });
-
-        comboNivel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnCadastrar.setText("Cadastrar");
         btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
@@ -151,12 +157,12 @@ public class TurmaView extends javax.swing.JFrame {
                             .addComponent(lbPreco)
                             .addComponent(lbLingua)
                             .addComponent(txtPreco)
-                            .addComponent(txtLingua)
                             .addComponent(txtDataFim)
                             .addComponent(lbDataFim)
                             .addComponent(lbDataInicio)
                             .addComponent(txtDataInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbNivel))
+                            .addComponent(lbNivel)
+                            .addComponent(comboLingua, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,9 +196,9 @@ public class TurmaView extends javax.swing.JFrame {
                 .addComponent(txtDataFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16)
                 .addComponent(lbLingua)
+                .addGap(12, 12, 12)
+                .addComponent(comboLingua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtLingua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lbNivel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(comboNivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -225,57 +231,79 @@ public class TurmaView extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         try {
-            // 1. Pega dados da interface
+            if (txtId.getText().trim().isEmpty() ||
+                txtPreco.getText().trim().isEmpty() ||
+                txtDataInicio.getText().trim().isEmpty() ||
+                txtDataFim.getText().trim().isEmpty() ||
+                comboLingua.getSelectedIndex() == -1 ||
+                comboNivel.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
+                return;
+            }
             int id = Integer.parseInt(txtId.getText().trim());
-            String lingua = txtLingua.getText().trim();
-            String nivel = comboNivel.getSelectedItem().toString();
+            Turma.Lingua lingua = Turma.Lingua.valueOf(comboLingua.getSelectedItem().toString());
+            Turma.Nivel nivel = Turma.Nivel.valueOf(comboNivel.getSelectedItem().toString());
             double preco = Double.parseDouble(txtPreco.getText().trim());
-
-            // 2. Trata datas
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate inicio = LocalDate.parse(txtDataInicio.getText().trim(), formatter);
             LocalDate fim = LocalDate.parse(txtDataFim.getText().trim(), formatter);
 
-            // 3. Salva
-            turmaController.inserirTurma(id, inicio, fim, lingua, nivel, preco);
-            atualizarTabela();
-            limparCampos();
-
+            String msg = turmaController.inserirTurma(id, inicio, fim, lingua, nivel, preco);
+            JOptionPane.showMessageDialog(this, msg);
+            if (msg.contains("sucesso")) {
+                atualizarTabela();
+                limparCampos();
+            }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao cadastrar turma: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "ID ou Preço inválidos.");
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, "Língua ou Nível inválidos! Use: " + Arrays.toString(Turma.Lingua.values()) + " / " + Arrays.toString(Turma.Nivel.values()));
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         try {
+            if (txtId.getText().trim().isEmpty() ||
+                txtPreco.getText().trim().isEmpty() ||
+                txtDataInicio.getText().trim().isEmpty() ||
+                txtDataFim.getText().trim().isEmpty() ||
+                comboLingua.getSelectedIndex() == -1 ||
+                comboNivel.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
+                return;
+            }
             int id = Integer.parseInt(txtId.getText().trim());
-            String lingua = txtLingua.getText().trim();
-            String nivel = comboNivel.getSelectedItem().toString();
-            double preco;
-            preco = Double.parseDouble(txtPreco.getText().trim());
-
+            Turma.Lingua lingua = Turma.Lingua.valueOf(comboLingua.getSelectedItem().toString());
+            Turma.Nivel nivel = Turma.Nivel.valueOf(comboNivel.getSelectedItem().toString());
+            double preco = Double.parseDouble(txtPreco.getText().trim());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate inicio = LocalDate.parse(txtDataInicio.getText().trim(), formatter);
             LocalDate fim = LocalDate.parse(txtDataFim.getText().trim(), formatter);
 
-            turmaController.atualizarTurma(id, inicio, fim, lingua, nivel, preco);
-
-            atualizarTabela();
-            limparCampos();
-
+            String msg = turmaController.atualizarTurma(id, inicio, fim, lingua, nivel, preco);
+            JOptionPane.showMessageDialog(this, msg);
+            if (msg.contains("sucesso")) {
+                atualizarTabela();
+                limparCampos();
+                txtId.setEditable(true);
+            }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao atualizar turma: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "ID ou Preço inválidos.");
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, "Língua ou Nível inválidos! Use: " + Arrays.toString(Turma.Lingua.values()) + " / " + Arrays.toString(Turma.Nivel.values()));
         }
     }//GEN-LAST:event_btnAtualizarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int linha = tabelaTurmas.getSelectedRow();
-
         if (linha != -1) {
             int id = Integer.parseInt(tabelaTurmas.getValueAt(linha, 0).toString());
-            turmaController.excluirTurma(id);
-            atualizarTabela();
-            limparCampos();
+            String msg = turmaController.excluirTurma(id);
+            JOptionPane.showMessageDialog(this, msg);
+            if (msg.contains("sucesso")) {
+                atualizarTabela();
+                limparCampos();
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Selecione uma turma para excluir.");
         }
@@ -287,16 +315,14 @@ public class TurmaView extends javax.swing.JFrame {
 
     private void tabelaTurmasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaTurmasMouseClicked
         int linha = tabelaTurmas.getSelectedRow();
-
         if (linha != -1) {
             txtId.setText(tabelaTurmas.getValueAt(linha, 0).toString());
-            txtLingua.setText(tabelaTurmas.getValueAt(linha, 1).toString());
+            comboLingua.setSelectedItem(tabelaTurmas.getValueAt(linha, 1).toString());
             comboNivel.setSelectedItem(tabelaTurmas.getValueAt(linha, 2).toString());
             txtPreco.setText(tabelaTurmas.getValueAt(linha, 3).toString());
             txtDataInicio.setText(tabelaTurmas.getValueAt(linha, 4).toString());
             txtDataFim.setText(tabelaTurmas.getValueAt(linha, 5).toString());
-
-            txtId.setEditable(false); // evita alteração no ID
+            txtId.setEditable(false);
         }
     }//GEN-LAST:event_tabelaTurmasMouseClicked
 
@@ -334,10 +360,8 @@ public class TurmaView extends javax.swing.JFrame {
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLimpar;
-    private javax.swing.JButton btnVoltar;
-    private javax.swing.JButton btnVoltar1;
-    private javax.swing.JButton btnVoltar2;
     private javax.swing.JButton btnVoltar3;
+    private javax.swing.JComboBox<String> comboLingua;
     private javax.swing.JComboBox<String> comboNivel;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbDataFim;
@@ -350,19 +374,18 @@ public class TurmaView extends javax.swing.JFrame {
     private javax.swing.JTextField txtDataFim;
     private javax.swing.JTextField txtDataInicio;
     private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtLingua;
     private javax.swing.JTextField txtPreco;
     // End of variables declaration//GEN-END:variables
 
     private void atualizarTabela() {
-        List<model.Turma> turmas = turmaController.listarTodasTurmas();
+        List<Turma> turmas = turmaController.listarTodasTurmas();
         String[] colunas = { "ID", "Língua", "Nível", "Preço", "Início", "Fim" };
         Object[][] dados = new Object[turmas.size()][6];
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         for (int i = 0; i < turmas.size(); i++) {
-            model.Turma t = turmas.get(i);
+            Turma t = turmas.get(i);
             dados[i][0] = t.getId();
             dados[i][1] = t.getLingua();
             dados[i][2] = t.getNivel();
@@ -370,17 +393,17 @@ public class TurmaView extends javax.swing.JFrame {
             dados[i][4] = t.getDataInicio().format(formatter);
             dados[i][5] = t.getDataFim().format(formatter);
         }
-
         tabelaTurmas.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
     }
     
-        private void limparCampos() {
+    private void limparCampos() {
         txtId.setText("");
-        txtLingua.setText("");
         txtPreco.setText("");
         txtDataInicio.setText("");
         txtDataFim.setText("");
-        comboNivel.setSelectedIndex(0);
+        comboLingua.setSelectedIndex(-1);
+        comboNivel.setSelectedIndex(-1);
         txtId.setEditable(true);
     }
+  
 }

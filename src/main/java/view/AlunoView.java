@@ -201,30 +201,37 @@ public class AlunoView extends javax.swing.JFrame {
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int linha = tabelaAlunos.getSelectedRow();
-
         if (linha != -1) {
             int matricula = (int) tabelaAlunos.getValueAt(linha, 0);
-            alunoController.excluirAluno(matricula);
-            atualizarTabela();
-            limparCampos();
+            String resultado = alunoController.excluirAluno(matricula);
+            JOptionPane.showMessageDialog(this, resultado);
+            if (resultado.contains("sucesso")) {
+                atualizarTabela();
+                limparCampos();
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Selecione um aluno para excluir.");
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        int matricula;
         try {
-            int matricula = Integer.parseInt(txtMatricula.getText().trim());
-            alunoController.inserirAluno(matricula, 
-                    txtNome.getText().trim(), 
-                    txtEndereco.getText().trim(), 
-                    txtTelefone.getText().trim(), 
-                    txtEmail.getText());
-            
-            atualizarTabela();
-            limparCampos();
+            matricula = Integer.parseInt(txtMatricula.getText().trim());
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Matrícula inválida.");
+            return;
+        }
+        String nome = txtNome.getText().trim();
+        String endereco = txtEndereco.getText().trim();
+        String telefone = txtTelefone.getText().trim();
+        String email = txtEmail.getText().trim();
+
+        String resultado = alunoController.inserirAluno(matricula, nome, endereco, telefone, email);
+        JOptionPane.showMessageDialog(this, resultado);
+        if (resultado.contains("sucesso")) {
+            atualizarTabela();
+            limparCampos();
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
@@ -244,21 +251,25 @@ public class AlunoView extends javax.swing.JFrame {
     }//GEN-LAST:event_tabelaAlunosMouseClicked
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
+        int matricula;
         try {
-            int matricula = Integer.parseInt(txtMatricula.getText().trim());
-            alunoController.atualizarAluno(matricula, 
-                    txtNome.getText().trim(), 
-                    txtEndereco.getText().trim(), 
-                    txtTelefone.getText().trim(), 
-                    txtEmail.getText());
-            
-            atualizarTabela();
-            limparCampos();
-            txtMatricula.setEditable(true); // libera campo para novo cadastro
+            matricula = Integer.parseInt(txtMatricula.getText().trim());
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Matrícula inválida.");
-    }
+            return;
+        }
+        String nome = txtNome.getText().trim();
+        String endereco = txtEndereco.getText().trim();
+        String telefone = txtTelefone.getText().trim();
+        String email = txtEmail.getText().trim();
 
+        String resultado = alunoController.atualizarAluno(matricula, nome, endereco, telefone, email);
+        JOptionPane.showMessageDialog(this, resultado);
+        if (resultado.contains("sucesso")) {
+            atualizarTabela();
+            limparCampos();
+            txtMatricula.setEditable(true);
+        }
     }//GEN-LAST:event_btnAtualizarActionPerformed
 
     private void btnVoltar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltar2ActionPerformed
@@ -335,6 +346,4 @@ public class AlunoView extends javax.swing.JFrame {
         txtEmail.setText(""); 
         txtMatricula.setEditable(true);
     }
-
 }
-

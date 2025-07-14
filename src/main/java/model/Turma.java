@@ -5,72 +5,54 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Turma {
+    public enum Lingua { INGLES, ESPANHOL, FRANCES }
+    public enum Nivel { INICIANTE, INTERMEDIARIO, AVANCADO }
+
     private int id;
     private LocalDate dataInicio;
     private LocalDate dataFim;
-    private String lingua;
-    private String nivel; // Iniciante, Intermediário, Avançado
+    private Lingua lingua;
+    private Nivel nivel;
     private double preco;
-    private List<Aluno> alunosMatriculados;
-    private Map<Aluno, Double> notasFinais;
 
-    public Turma(int id, LocalDate dataInicio, LocalDate dataFim, String lingua, String nivel, double preco) {
+    public Turma(int id, LocalDate dataInicio, LocalDate dataFim, Lingua lingua, Nivel nivel, double preco) {
+        if (id <= 0) throw new IllegalArgumentException("ID deve ser positivo.");
+        if (dataInicio == null) throw new IllegalArgumentException("Data de início obrigatória.");
+        if (dataFim == null) throw new IllegalArgumentException("Data de fim obrigatória.");
+        if (lingua == null) throw new IllegalArgumentException("Língua obrigatória.");
+        if (nivel == null) throw new IllegalArgumentException("Nível obrigatório.");
+        if (preco < 0) throw new IllegalArgumentException("Preço não pode ser negativo.");
+
         this.id = id;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.lingua = lingua;
         this.nivel = nivel;
         this.preco = preco;
-        this.alunosMatriculados = new ArrayList<>();
-        this.notasFinais = new HashMap<>();
-    }
-
-    // Métodos de matrícula e notas
-    public void matricularAluno(Aluno aluno) {
-        if (!alunosMatriculados.contains(aluno)) {
-            alunosMatriculados.add(aluno);
-        }
-    }
-
-    public void registrarNota(Aluno aluno, double nota) {
-        if (alunosMatriculados.contains(aluno)) {
-            notasFinais.put(aluno, nota);
-        }
-    }
-
-    public double getArrecadacaoTotal() {
-        return preco * alunosMatriculados.size();
     }
 
     // Getters e Setters
     public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-
+    public void setId(int id) {
+        if (id <= 0) throw new IllegalArgumentException("ID deve ser positivo.");
+        this.id = id;
+    }
     public LocalDate getDataInicio() { return dataInicio; }
     public void setDataInicio(LocalDate dataInicio) { this.dataInicio = dataInicio; }
-
     public LocalDate getDataFim() { return dataFim; }
     public void setDataFim(LocalDate dataFim) { this.dataFim = dataFim; }
-
-    public String getLingua() { return lingua; }
-    public void setLingua(String lingua) { this.lingua = lingua; }
-
-    public String getNivel() { return nivel; }
-    public void setNivel(String nivel) { this.nivel = nivel; }
-
+    public Lingua getLingua() { return lingua; }
+    public void setLingua(Lingua lingua) { this.lingua = lingua; }
+    public Nivel getNivel() { return nivel; }
+    public void setNivel(Nivel nivel) { this.nivel = nivel; }
     public double getPreco() { return preco; }
     public void setPreco(double preco) { this.preco = preco; }
 
-    public List<Aluno> getAlunosMatriculados() { return alunosMatriculados; }
-
-    public Map<Aluno, Double> getNotasFinais() { return notasFinais; }
-    
     @Override
-    public String toString() { return id + " - " + lingua + " (" + nivel + ")";  }
+    public String toString() {
+        return id + " - " + lingua + " (" + nivel + ")";
+    }
 }

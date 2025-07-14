@@ -18,11 +18,11 @@ public class TurmaTableManager {
             String sqlTurma = """
                 CREATE TABLE IF NOT EXISTS turma (
                     id INTEGER PRIMARY KEY,
-                    dataInicio TEXT,
-                    dataFim TEXT,
-                    lingua TEXT,
-                    nivel TEXT,
-                    preco REAL
+                    dataInicio TEXT NOT NULL,
+                    dataFim TEXT NOT NULL,
+                    lingua TEXT NOT NULL,
+                    nivel TEXT NOT NULL,
+                    preco REAL NOT NULL
                 );
             """;
 
@@ -32,7 +32,7 @@ public class TurmaTableManager {
                     turma_id INTEGER,
                     aluno_matricula INTEGER,
                     PRIMARY KEY (turma_id, aluno_matricula),
-                    FOREIGN KEY (turma_id) REFERENCES turma(id),
+                    FOREIGN KEY (turma_id) REFERENCES turma(id) ON DELETE CASCADE,
                     FOREIGN KEY (aluno_matricula) REFERENCES aluno(matricula)
                 );
             """;
@@ -42,10 +42,10 @@ public class TurmaTableManager {
                 CREATE TABLE IF NOT EXISTS nota_final (
                     turma_id INTEGER,
                     aluno_matricula INTEGER,
-                    nota REAL,
+                    nota REAL NOT NULL,
                     PRIMARY KEY (turma_id, aluno_matricula),
-                    FOREIGN KEY (turma_id) REFERENCES turma(id),
-                    FOREIGN KEY (aluno_matricula) REFERENCES aluno(matricula)
+                    FOREIGN KEY (turma_id) REFERENCES turma(id) ON DELETE CASCADE,
+                    FOREIGN KEY (aluno_matricula) REFERENCES aluno(matricula) ON DELETE CASCADE
                 );
             """;
 

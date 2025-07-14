@@ -9,15 +9,16 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import java.util.logging.Logger;
 import controller.TurmaController;
+import model.Turma;
+import model.Aluno;
 
 /**
  *
  * @author davis
  */
-public class NotaFinalView extends javax.swing.JFrame {
-    
+public class NotaFinalView extends javax.swing.JFrame {  
     private TurmaController turmaController = new TurmaController();
-    private model.Turma turmaSelecionada;// *
+    model.Turma turmaSelecionada;
     private static final Logger logger = Logger.getLogger(NotaFinalView.class.getName());
 
     /**
@@ -25,8 +26,10 @@ public class NotaFinalView extends javax.swing.JFrame {
      */
     public NotaFinalView() {
         initComponents();
-        carregarTurmas(); // Carrega turmas no combo ao iniciar
-        configurarTabela(); // Define estrutura da tabela de notas
+        carregarTurmas();
+        cmbTurma.setSelectedIndex(-1);
+        configurarTabela();
+        turmaSelecionada = null;
     }
 
 
@@ -89,22 +92,21 @@ public class NotaFinalView extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(38, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(cmbTurma, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(348, 348, 348))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(cmbTurma, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(139, 139, 139)
+                        .addComponent(btnSalvar)
+                        .addGap(180, 180, 180)
+                        .addComponent(btnVoltar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
+                        .addGap(93, 93, 93)
                         .addComponent(scrollNotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(183, 183, 183))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(139, 139, 139)
-                .addComponent(btnSalvar)
-                .addGap(180, 180, 180)
-                .addComponent(btnVoltar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -114,9 +116,9 @@ public class NotaFinalView extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cmbTurma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addComponent(scrollNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
                     .addComponent(btnVoltar))
@@ -129,28 +131,50 @@ public class NotaFinalView extends javax.swing.JFrame {
     private void cmbTurmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTurmaActionPerformed
         int index = cmbTurma.getSelectedIndex();
         if (index != -1) {
-            turmaSelecionada = (model.Turma) cmbTurma.getSelectedItem();
+            turmaSelecionada = (Turma) cmbTurma.getSelectedItem();
             carregarNotasNaTabela();
+        } else {
+            turmaSelecionada = null;
+            configurarTabela();
         }
     }//GEN-LAST:event_cmbTurmaActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         if (turmaSelecionada == null) return;
 
-        javax.swing.table.DefaultTableModel model = 
+        javax.swing.table.DefaultTableModel model =
             (javax.swing.table.DefaultTableModel) tabelaNotas.getModel();
 
+        boolean houveErro = false;
+
         for (int i = 0; i < model.getRowCount(); i++) {
-            String alunoStr = (String) model.getValueAt(i, 0);
-            String notaStr = String.valueOf(model.getValueAt(i, 1)).trim();
+            String alunoStr = String.valueOf(model.getValueAt(i, 0));
+            String notaStr = String.valueOf(model.getValueAt(i, 1)).replace(',', '.').trim();
 
-            int matricula = Integer.parseInt(alunoStr.split(" - ")[0]);
-            double nota = notaStr.isEmpty() ? 0.0 : Double.parseDouble(notaStr);
+            if (alunoStr.equals("Nenhum aluno matriculado")) continue;
 
-            turmaController.registrarNota(turmaSelecionada.getId(), matricula, nota);
+            int matricula;
+            double nota;
+
+            try {
+                matricula = Integer.parseInt(alunoStr.split(" - ")[0]);
+                nota = notaStr.isEmpty() ? 0.0 : Double.parseDouble(notaStr);
+
+                String resultado = turmaController.registrarNota(turmaSelecionada.getId(), matricula, nota);
+                if (!resultado.startsWith("Nota registrada")) {
+                    houveErro = true;
+                }
+            } catch (NumberFormatException ex) {
+                houveErro = true;
+            }
         }
 
-        JOptionPane.showMessageDialog(this, "Notas salvas com sucesso!");
+        if (houveErro)
+            JOptionPane.showMessageDialog(this, "Alguma(s) nota(s) não puderam ser salvas.");
+        else
+            JOptionPane.showMessageDialog(this, "Notas salvas com sucesso!");
+
+        carregarNotasNaTabela();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
@@ -193,13 +217,12 @@ public class NotaFinalView extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void carregarTurmas() {
-        List<model.Turma> turmas = turmaController.listarTodasTurmas();
+        List<Turma> turmas = turmaController.listarTodasTurmas();
         cmbTurma.removeAllItems();
 
-        for (model.Turma t : turmas) {
+        for (Turma t : turmas) {
             cmbTurma.addItem(t);
         }
-
         cmbTurma.setSelectedIndex(-1); // Nenhuma selecionada por padrão
     }
 
@@ -209,19 +232,27 @@ public class NotaFinalView extends javax.swing.JFrame {
             new String[] { "Aluno", "Nota" }
         ));
     }
-    
+
     private void carregarNotasNaTabela() {
+        configurarTabela();
         if (turmaSelecionada == null) return;
 
-        javax.swing.table.DefaultTableModel model = 
+        javax.swing.table.DefaultTableModel model =
             (javax.swing.table.DefaultTableModel) tabelaNotas.getModel();
-        model.setRowCount(0); // Limpa a tabela
 
-        for (model.Aluno aluno : turmaSelecionada.getAlunosMatriculados()) {
-            Double nota = turmaSelecionada.getNotasFinais().get(aluno);
-            model.addRow(new Object[]{ aluno.getMatricula() + " - " + aluno.getNome(), 
-                                       nota != null ? nota : "" });
+        List<Aluno> alunos = turmaController.listarAlunosMatriculados(turmaSelecionada.getId());
+        if (alunos == null || alunos.isEmpty()) {
+            model.addRow(new Object[] { "Nenhum aluno matriculado", "" });
+            return;
+        }
+
+        Map<Aluno, Double> notas = turmaController.listarNotasFinais(turmaSelecionada.getId());
+        for (Aluno aluno : alunos) {
+            Double nota = notas.get(aluno);
+            model.addRow(new Object[] {
+                aluno.getMatricula() + " - " + aluno.getNome(),
+                nota != null ? nota : ""
+            });
         }
     }
-
 }

@@ -34,12 +34,12 @@
                           <Component id="lbPreco" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="lbLingua" min="-2" max="-2" attributes="0"/>
                           <Component id="txtPreco" max="32767" attributes="0"/>
-                          <Component id="txtLingua" alignment="0" max="32767" attributes="0"/>
                           <Component id="txtDataFim" max="32767" attributes="0"/>
                           <Component id="lbDataFim" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="lbDataInicio" min="-2" max="-2" attributes="0"/>
                           <Component id="txtDataInicio" alignment="0" min="-2" pref="371" max="-2" attributes="0"/>
                           <Component id="lbNivel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="comboLingua" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -81,9 +81,9 @@
               <Component id="txtDataFim" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
               <Component id="lbLingua" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <Component id="comboLingua" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="txtLingua" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="lbNivel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="comboNivel" min="-2" max="-2" attributes="0"/>
@@ -139,8 +139,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtPreco">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtLingua">
-    </Component>
     <Component class="javax.swing.JTextField" name="txtDataFim">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDataFimActionPerformed"/>
@@ -156,12 +154,7 @@
     <Component class="javax.swing.JComboBox" name="comboNivel">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
-          </StringArray>
+          <StringArray count="0"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -231,6 +224,16 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVoltar3ActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="comboLingua">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

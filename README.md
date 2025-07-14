@@ -8,15 +8,19 @@
 	- [x] Gasto
 	- [x] Relatorio
 	- [x] Notas
-- [ ] Substitute hardcoded strings with .toString() in View files
-- [ ] Fix Relatorio
-- [ ] Add Update in DAOs
-- [ ] Data validation (for email, telefone, etc)
-- [ ] Substitute hardcoded listing options in View files
+- [ ] Adicionar métodos .toString() aos modelos necessários
+- [ ] Consertar relatório
+- [ ] Testar essa parte de matricular aluno na turma, e se ele vai aparecer na tabela da NotaFinalView
+- [ ] Review TurmaController
+- [ ] Máscaras para hora, data e matrícula
+- [ ] Substituir excluir+inserir por update nos DAOs
+- [ ] Validar dados de input(email, telefone, etc)
+- [ ] Substituir as opções das Views por métodos ao inves de strings
 - [ ] Review exceptions
-- [ ] Review TODOs in View files
-- [ ] .gitignore
-- [ ] CRUD functions feedback to view
-- [ ] Set ID to autoincrement
-- [ ] Use case views
+- [ ] Review "// TODO" nas Views
+- [x] .gitignore
+- [ ] Colocar feedback para as funções dos views
+- [ ] Colocar ID do sqlite para autoincrement
+- [ ] Views dos casos de uso
 - [ ] ORM
+

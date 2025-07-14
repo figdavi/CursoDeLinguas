@@ -15,9 +15,9 @@ public class AlunoTableManager {
             CREATE TABLE IF NOT EXISTS aluno (
                 matricula INTEGER PRIMARY KEY,
                 nome TEXT NOT NULL,
-                endereco TEXT,
-                telefone TEXT,
-                email TEXT
+                endereco TEXT NOT NULL,
+                telefone TEXT NOT NULL,
+                email TEXT NOT NULL
             );
         """;
 
