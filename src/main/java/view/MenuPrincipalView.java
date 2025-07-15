@@ -4,19 +4,22 @@
  */
 package view;
 
+import java.util.logging.Logger;
+
 /**
  *
  * @author davis
  */
 public class MenuPrincipalView extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuPrincipalView.class.getName());
+    private static final Logger logger = Logger.getLogger(MenuPrincipalView.class.getName());
 
     /**
      * Creates new form MenuPrincipalView
      */
     public MenuPrincipalView() {
         initComponents();
+        carregarUsuarios();
     }
 
     /**
@@ -40,6 +43,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         btnRelatorios = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
         btnMatricularAluno = new javax.swing.JButton();
+        cmbUsuario = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,6 +121,13 @@ public class MenuPrincipalView extends javax.swing.JFrame {
             }
         });
 
+        cmbUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemSelected(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -124,6 +135,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMatricularAluno)
                     .addComponent(btnSair)
                     .addComponent(btnFuncionario)
@@ -139,7 +151,9 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
+                .addComponent(cmbUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAluno)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnProfessor)
@@ -167,7 +181,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(88, Short.MAX_VALUE)
+                .addContainerGap(146, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(146, 146, 146))
             .addGroup(layout.createSequentialGroup()
@@ -182,7 +196,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         pack();
@@ -228,6 +242,10 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         new MatriculaAlunoView().setVisible(true);
     }//GEN-LAST:event_btnMatricularAlunoActionPerformed
 
+    private void itemSelected(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSelected
+        aplicarPermissoes((String) cmbUsuario.getSelectedItem());
+    }//GEN-LAST:event_itemSelected
+    
     /**
      * @param args the command line arguments
      */
@@ -264,7 +282,30 @@ public class MenuPrincipalView extends javax.swing.JFrame {
     private javax.swing.JButton btnRelatorios;
     private javax.swing.JButton btnSair;
     private javax.swing.JButton btnTurma;
+    private javax.swing.JComboBox<String> cmbUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    private void carregarUsuarios() {
+        cmbUsuario.removeAllItems();
+        String[] usuarios = {"Secretário", "Gerente", "Professor"};
+        for (String u : usuarios) {
+            cmbUsuario.addItem(u);
+        }
+        cmbUsuario.setSelectedIndex(-1);
+    }
+    
+    private void aplicarPermissoes(String usuario) {
+        btnTurma.setVisible("Secretário".equalsIgnoreCase(usuario));
+        btnAula.setVisible("Secretário".equalsIgnoreCase(usuario));
+        btnAluno.setVisible("Secretário".equalsIgnoreCase(usuario));
+        btnMatricularAluno.setVisible("Secretário".equalsIgnoreCase(usuario));
+        btnProfessor.setVisible("Gerente".equalsIgnoreCase(usuario));
+        btnFuncionario.setVisible("Gerente".equalsIgnoreCase(usuario));
+        btnGastos.setVisible("Gerente".equalsIgnoreCase(usuario));
+        btnRelatorios.setVisible("Gerente".equalsIgnoreCase(usuario));
+        btnNotaFinal.setVisible("Professor".equalsIgnoreCase(usuario));
+    }
+    
 }

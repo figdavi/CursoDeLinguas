@@ -8,19 +8,20 @@
 	- [x] Gasto
 	- [x] Relatorio
 	- [x] Notas
-- [ ] Adicionar métodos .toString() aos modelos necessários
+- [x] Adicionar métodos .toString() aos modelos necessários
+- [ ] Transformar Usuario em Enum em MenuPrincipalView
 - [ ] Consertar relatório
 - [ ] Testar essa parte de matricular aluno na turma, e se ele vai aparecer na tabela da NotaFinalView
-- [ ] Review TurmaController
+- [x] Review TurmaController
 - [ ] Máscaras para hora, data e matrícula
 - [ ] Substituir excluir+inserir por update nos DAOs
 - [ ] Validar dados de input(email, telefone, etc)
 - [ ] Substituir as opções das Views por métodos ao inves de strings
-- [ ] Review exceptions
+- [x] Review exceptions
 - [ ] Review "// TODO" nas Views
 - [x] .gitignore
-- [ ] Colocar feedback para as funções dos views
+- [x] Colocar feedback para as funções dos views
 - [ ] Colocar ID do sqlite para autoincrement
-- [ ] Views dos casos de uso
+- [x] Views dos casos de uso
 - [ ] ORM
 
