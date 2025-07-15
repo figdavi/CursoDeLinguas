@@ -92,7 +92,7 @@ public class TurmaController {
         return turmaDAO.buscarNotaFinal(turmaId, alunoMatricula);
     }
 
-    public Map<Aluno, Double> listarNotasFinais(int turmaId) {
+    public Map<Integer, Double> listarNotasFinais(int turmaId) {
         if (turmaId <= 0) return Map.of();
         return turmaDAO.listarNotasFinais(turmaId);
     }

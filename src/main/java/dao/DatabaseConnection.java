@@ -7,6 +7,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DatabaseConnection {
     private static final String URL = "jdbc:sqlite:curso.db";
@@ -18,7 +19,14 @@ public class DatabaseConnection {
             throw new SQLException("Driver JDBC do SQLite não encontrado!", e);
         }
 
-        return DriverManager.getConnection(URL);
+        Connection conn = DriverManager.getConnection(URL);
+
+        // Ativa o suporte a chaves estrangeiras para esta conexão
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute("PRAGMA foreign_keys = ON");
+        }
+
+        return conn;
     }
 }
 

@@ -19,7 +19,7 @@ public class AulaTableManager {
                 horaInicio TEXT NOT NULL,
                 horaFim TEXT NOT NULL,
                 professor_matricula INTEGER,
-                FOREIGN KEY (turma_id) REFERENCES turma(id),
+                FOREIGN KEY (turma_id) REFERENCES turma(id) ON DELETE CASCADE,
                 FOREIGN KEY (professor_matricula) REFERENCES professor(matricula)
             );
         """;

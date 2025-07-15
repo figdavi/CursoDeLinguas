@@ -182,13 +182,6 @@ public class GastoView extends javax.swing.JFrame {
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         try {
-            if (txtID.getText().trim().isEmpty() ||
-                txtDescricao.getText().trim().isEmpty() ||
-                txtValor.getText().trim().isEmpty() ||
-                txtData.getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
-                return;
-            }
             int id = Integer.parseInt(txtID.getText().trim());
             String descricao = txtDescricao.getText().trim();
             double valor = Double.parseDouble(txtValor.getText().trim());
@@ -230,13 +223,6 @@ public class GastoView extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         try {
-            if (txtID.getText().trim().isEmpty() ||
-                txtDescricao.getText().trim().isEmpty() ||
-                txtValor.getText().trim().isEmpty() ||
-                txtData.getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
-                return;
-            }
             int id = Integer.parseInt(txtID.getText().trim());
             String descricao = txtDescricao.getText().trim();
             double valor = Double.parseDouble(txtValor.getText().trim());
@@ -260,6 +246,7 @@ public class GastoView extends javax.swing.JFrame {
             txtDescricao.setText(tabelaGastos.getValueAt(linha, 1).toString());
             txtValor.setText(tabelaGastos.getValueAt(linha, 2).toString());
             txtData.setText(tabelaGastos.getValueAt(linha, 3).toString());
+            
             txtID.setEditable(false);
         }
     }//GEN-LAST:event_tabelaGastosMouseClicked

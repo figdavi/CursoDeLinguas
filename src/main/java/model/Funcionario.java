@@ -4,8 +4,6 @@
  */
 package model;
 
-import java.util.Objects;
-
 public abstract class Funcionario {
     protected int id;
     protected String nome;
@@ -59,19 +57,6 @@ public abstract class Funcionario {
     public void setCargo(Cargo cargo) {
         if (cargo == null) throw new IllegalArgumentException("Cargo obrigatório.");
         this.cargo = cargo;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Funcionario that = (Funcionario) obj;
-        return id == that.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 
     @Override

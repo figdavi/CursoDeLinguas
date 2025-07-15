@@ -34,22 +34,22 @@ public class Aluno {
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-
+    
+    @Override
+    public String toString() {
+        return matricula + " - " + nome;
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Aluno aluno = (Aluno) obj;
-        return matricula == aluno.matricula;
+        if (!(obj instanceof Aluno)) return false;
+        Aluno other = (Aluno) obj;
+        return this.matricula == other.matricula;
     }
 
     @Override
     public int hashCode() {
         return Integer.hashCode(matricula);
-    }
-    
-    @Override
-    public String toString() {
-        return matricula + " - " + nome;
     }
 }

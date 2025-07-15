@@ -39,6 +39,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         btnGastos = new javax.swing.JButton();
         btnRelatorios = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
+        btnMatricularAluno = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -109,6 +110,13 @@ public class MenuPrincipalView extends javax.swing.JFrame {
             }
         });
 
+        btnMatricularAluno.setText("Matricular Aluno");
+        btnMatricularAluno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMatricularAlunoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -116,6 +124,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnMatricularAluno)
                     .addComponent(btnSair)
                     .addComponent(btnFuncionario)
                     .addComponent(btnProfessor)
@@ -138,6 +147,8 @@ public class MenuPrincipalView extends javax.swing.JFrame {
                 .addComponent(btnFuncionario)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnTurma)
+                .addGap(5, 5, 5)
+                .addComponent(btnMatricularAluno)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAula)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -148,7 +159,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
                 .addComponent(btnRelatorios)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSair)
-                .addGap(55, 55, 55))
+                .addGap(23, 23, 23))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -156,13 +167,13 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(44, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(jLabel1)))
-                .addGap(57, 57, 57))
+                .addContainerGap(88, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(146, 146, 146))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,6 +224,10 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         new GastoView().setVisible(true);
     }//GEN-LAST:event_btnGastosActionPerformed
 
+    private void btnMatricularAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatricularAlunoActionPerformed
+        new MatriculaAlunoView().setVisible(true);
+    }//GEN-LAST:event_btnMatricularAlunoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -243,6 +258,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
     private javax.swing.JButton btnAula;
     private javax.swing.JButton btnFuncionario;
     private javax.swing.JButton btnGastos;
+    private javax.swing.JButton btnMatricularAluno;
     private javax.swing.JButton btnNotaFinal;
     private javax.swing.JButton btnProfessor;
     private javax.swing.JButton btnRelatorios;

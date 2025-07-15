@@ -260,7 +260,34 @@ public class AulaView extends javax.swing.JFrame {
             txtData.setText(tabelaAulas.getValueAt(linha, 1).toString());
             txtHoraInicio.setText(tabelaAulas.getValueAt(linha, 2).toString());
             txtHoraFim.setText(tabelaAulas.getValueAt(linha, 3).toString());
-
+            
+        // Seleciona corretamente a Turma no ComboBox
+        String turmaStr = tabelaAulas.getValueAt(linha, 4).toString();
+            for (int i = 0; i < cmbTurma.getItemCount(); i++) {
+                Turma c = (Turma) cmbTurma.getItemAt(i);
+                if (c.toString().equals(turmaStr)) {
+                    cmbTurma.setSelectedIndex(i);
+                    break;
+                }
+            }
+        
+        // Seleciona corretamente o Professor no ComboBox
+        Professor prof = (Professor) tabelaAulas.getValueAt(linha, 5);
+        boolean encontrou = false;
+        for (int i = 0; i < cmbProfessor.getItemCount(); i++) {
+            Professor p = (Professor) cmbProfessor.getItemAt(i);
+            if (prof == null && p == null) {
+                cmbProfessor.setSelectedIndex(i);
+                encontrou = true;
+                break;
+            } else if (p != null && prof != null && p.getMatricula() == prof.getMatricula()) {
+                cmbProfessor.setSelectedIndex(i);
+                encontrou = true;
+                break;
+            }
+        }
+        if (!encontrou) cmbProfessor.setSelectedIndex(-1);
+                
             txtId.setEditable(false); // evita alteração do ID
         }
     }//GEN-LAST:event_tabelaAulasMouseClicked
@@ -477,14 +504,13 @@ public class AulaView extends javax.swing.JFrame {
             dados[i][1] = a.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             dados[i][2] = a.getHoraInicio().toString();
             dados[i][3] = a.getHoraFim().toString();
-            dados[i][4] = a.getTurma() != null ? a.getTurma().getId() : "Sem turma";
-            dados[i][5] = a.getProfessor() != null ? a.getProfessor().getNome() : "Sem professor";
+            dados[i][4] = a.getTurma();
+            dados[i][5] = a.getProfessor();
         }
 
         tabelaAulas.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
     }
     
-
     private void limparCampos() {
         txtId.setText("");
         txtData.setText("");

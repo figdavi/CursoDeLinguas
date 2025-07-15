@@ -207,10 +207,10 @@ public class TurmaDAO {
     }
 
     // Listar todas as notas finais da turma (Map<Aluno, Nota>)
-    public Map<Aluno, Double> listarNotasFinais(int turmaId) {
-        Map<Aluno, Double> notas = new LinkedHashMap<>();
+    public Map<Integer, Double> listarNotasFinais(int turmaId) {
+        Map<Integer, Double> notas = new LinkedHashMap<>();
         String sql = """
-            SELECT a.matricula, a.nome, a.endereco, a.telefone, a.email, nf.nota
+            SELECT a.matricula, nf.nota
             FROM nota_final nf
             INNER JOIN aluno a ON nf.aluno_matricula = a.matricula
             WHERE nf.turma_id = ?
@@ -220,19 +220,14 @@ public class TurmaDAO {
             pstmt.setInt(1, turmaId);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                Aluno aluno = new Aluno(
-                    rs.getInt("matricula"),
-                    rs.getString("nome"),
-                    rs.getString("endereco"),
-                    rs.getString("telefone"),
-                    rs.getString("email")
-                );
+                int matricula = rs.getInt("matricula");
                 Double nota = rs.getDouble("nota");
-                notas.put(aluno, nota);
+                notas.put(matricula, nota);
             }
         } catch (SQLException e) {
             System.out.println("Erro ao listar notas finais: " + e.getMessage());
         }
         return notas;
     }
+
 }

@@ -210,16 +210,6 @@ public class FuncionarioView extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         try {
-            if (txtID.getText().trim().isEmpty() ||
-                txtNome.getText().trim().isEmpty() ||
-                txtEndereco.getText().trim().isEmpty() ||
-                txtTelefone.getText().trim().isEmpty() ||
-                txtSalario.getText().trim().isEmpty() ||
-                cmbCargo.getSelectedIndex() == -1) {
-                JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
-                return;
-            }
-
             int id = Integer.parseInt(txtID.getText().trim());
             String nome = txtNome.getText().trim();
             String endereco = txtEndereco.getText().trim();
@@ -241,16 +231,6 @@ public class FuncionarioView extends javax.swing.JFrame {
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         try {
-            if (txtID.getText().trim().isEmpty() ||
-                txtNome.getText().trim().isEmpty() ||
-                txtEndereco.getText().trim().isEmpty() ||
-                txtTelefone.getText().trim().isEmpty() ||
-                txtSalario.getText().trim().isEmpty() ||
-                cmbCargo.getSelectedIndex() == -1) {
-                JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
-                return;
-            }
-
             int id = Integer.parseInt(txtID.getText().trim());
             String nome = txtNome.getText().trim();
             String endereco = txtEndereco.getText().trim();

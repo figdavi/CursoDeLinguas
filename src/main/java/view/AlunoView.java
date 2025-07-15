@@ -203,11 +203,15 @@ public class AlunoView extends javax.swing.JFrame {
         int linha = tabelaAlunos.getSelectedRow();
         if (linha != -1) {
             int matricula = (int) tabelaAlunos.getValueAt(linha, 0);
-            String resultado = alunoController.excluirAluno(matricula);
-            JOptionPane.showMessageDialog(this, resultado);
-            if (resultado.contains("sucesso")) {
-                atualizarTabela();
-                limparCampos();
+            int confirm = JOptionPane.showConfirmDialog(this, "Deseja excluir o aluno selecionado?",
+                    "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                String resultado = alunoController.excluirAluno(matricula);
+                JOptionPane.showMessageDialog(this, resultado);
+                if (resultado.contains("sucesso")) {
+                    atualizarTabela();
+                    limparCampos();
+                }
             }
         } else {
             JOptionPane.showMessageDialog(this, "Selecione um aluno para excluir.");
@@ -346,4 +350,5 @@ public class AlunoView extends javax.swing.JFrame {
         txtEmail.setText(""); 
         txtMatricula.setEditable(true);
     }
+    
 }

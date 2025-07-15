@@ -21,6 +21,8 @@ public class FuncionarioController {
     public String inserirFuncionario(int id, String nome, String endereco, String telefone, double salario, Cargo cargo) {
         if (id <= 0) return "ID deve ser positivo.";
         if (nome == null || nome.trim().isEmpty()) return "Nome obrigatório.";
+        if (endereco == null || endereco.trim().isEmpty()) return "Endereço obrigatório.";
+        if (telefone == null || telefone.trim().isEmpty()) return "Telefone obrigatório.";
         if (salario < 0) return "Salário deve ser positivo.";
         if (cargo == null) return "Cargo obrigatório.";
         if (funcionarioDAO.buscarPorId(id) != null) return "Já existe funcionário com esse ID.";
@@ -38,6 +40,8 @@ public class FuncionarioController {
     public String atualizarFuncionario(int id, String nome, String endereco, String telefone, double salario, Cargo cargo) {
         if (id <= 0) return "ID deve ser positivo.";
         if (nome == null || nome.trim().isEmpty()) return "Nome obrigatório.";
+        if (endereco == null || endereco.trim().isEmpty()) return "Endereço obrigatório.";
+        if (telefone == null || telefone.trim().isEmpty()) return "Telefone obrigatório.";
         if (salario < 0) return "Salário deve ser positivo.";
         if (cargo == null) return "Cargo obrigatório.";
         if (funcionarioDAO.buscarPorId(id) == null) return "Funcionário não encontrado para atualização.";

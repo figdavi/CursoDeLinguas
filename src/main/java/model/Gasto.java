@@ -5,7 +5,6 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 public class Gasto {
     private int id;
@@ -47,19 +46,6 @@ public class Gasto {
     public void setData(LocalDate data) {
         if (data == null) throw new IllegalArgumentException("Data obrigatória.");
         this.data = data;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Gasto)) return false;
-        Gasto gasto = (Gasto) o;
-        return id == gasto.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 
     @Override

@@ -33,7 +33,7 @@ public class TurmaTableManager {
                     aluno_matricula INTEGER,
                     PRIMARY KEY (turma_id, aluno_matricula),
                     FOREIGN KEY (turma_id) REFERENCES turma(id) ON DELETE CASCADE,
-                    FOREIGN KEY (aluno_matricula) REFERENCES aluno(matricula)
+                    FOREIGN KEY (aluno_matricula) REFERENCES aluno(matricula) ON DELETE CASCADE
                 );
             """;
 
@@ -48,7 +48,7 @@ public class TurmaTableManager {
                     FOREIGN KEY (aluno_matricula) REFERENCES aluno(matricula) ON DELETE CASCADE
                 );
             """;
-
+            
             stmt.execute(sqlTurma);
             stmt.execute(sqlTurmaAluno);
             stmt.execute(sqlNotaFinal);

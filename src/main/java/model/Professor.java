@@ -5,7 +5,6 @@
 package model;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Professor {
     private int matricula;
@@ -52,19 +51,6 @@ public class Professor {
     public void setLinguas(List<Lingua> linguas) {
         if (linguas == null || linguas.isEmpty()) throw new IllegalArgumentException("Professor deve ter ao menos uma língua.");
         this.linguas = linguas;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Professor that = (Professor) obj;
-        return matricula == that.matricula;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(matricula);
     }
 
     @Override

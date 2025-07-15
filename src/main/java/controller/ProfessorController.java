@@ -30,6 +30,8 @@ public class ProfessorController {
     ) {
         if (matricula <= 0) return "Matrícula deve ser positiva.";
         if (nome == null || nome.trim().isEmpty()) return "Nome obrigatório.";
+        if (endereco == null || endereco.trim().isEmpty()) return "Endereço obrigatório.";
+        if (telefone == null || telefone.trim().isEmpty()) return "Telefone obrigatório.";
         if (valorHora < 0) return "Valor/hora deve ser positivo.";
         if (linguas == null || linguas.isEmpty()) return "Professor deve ter ao menos uma língua.";
         if (professorDAO.buscarPorMatricula(matricula) != null) return "Já existe professor com essa matrícula.";
@@ -53,6 +55,8 @@ public class ProfessorController {
     ) {
         if (matricula <= 0) return "Matrícula deve ser positiva.";
         if (nome == null || nome.trim().isEmpty()) return "Nome obrigatório.";
+        if (endereco == null || endereco.trim().isEmpty()) return "Endereço obrigatório.";
+        if (telefone == null || telefone.trim().isEmpty()) return "Telefone obrigatório.";
         if (valorHora < 0) return "Valor/hora deve ser positivo.";
         if (linguas == null || linguas.isEmpty()) return "Professor deve ter ao menos uma língua.";
         if (professorDAO.buscarPorMatricula(matricula) == null) return "Professor não encontrado para atualização.";

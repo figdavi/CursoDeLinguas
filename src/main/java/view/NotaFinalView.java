@@ -27,11 +27,10 @@ public class NotaFinalView extends javax.swing.JFrame {
     public NotaFinalView() {
         initComponents();
         carregarTurmas();
-        cmbTurma.setSelectedIndex(-1);
-        configurarTabela();
         turmaSelecionada = null;
+        configurarTabela();
+        setVisible(true);
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -129,18 +128,20 @@ public class NotaFinalView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmbTurmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTurmaActionPerformed
-        int index = cmbTurma.getSelectedIndex();
-        if (index != -1) {
-            turmaSelecionada = (Turma) cmbTurma.getSelectedItem();
-            carregarNotasNaTabela();
-        } else {
-            turmaSelecionada = null;
-            configurarTabela();
-        }
+        turmaSelecionada = (Turma) cmbTurma.getSelectedItem();
+        carregarNotasNaTabela();
     }//GEN-LAST:event_cmbTurmaActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        if (turmaSelecionada == null) return;
+        if (turmaSelecionada == null) {
+            JOptionPane.showMessageDialog(this, "Selecione uma turma.");
+            return;
+        }
+
+        // Força salvar qualquer valor em edição antes de ler os dados!
+        if (tabelaNotas.isEditing()) {
+            tabelaNotas.getCellEditor().stopCellEditing();
+        }
 
         javax.swing.table.DefaultTableModel model =
             (javax.swing.table.DefaultTableModel) tabelaNotas.getModel();
@@ -153,12 +154,11 @@ public class NotaFinalView extends javax.swing.JFrame {
 
             if (alunoStr.equals("Nenhum aluno matriculado")) continue;
 
-            int matricula;
-            double nota;
-
             try {
-                matricula = Integer.parseInt(alunoStr.split(" - ")[0]);
-                nota = notaStr.isEmpty() ? 0.0 : Double.parseDouble(notaStr);
+                int matricula = Integer.parseInt(alunoStr.split(" - ")[0]);
+                if (notaStr.isEmpty()) continue; // Pula nota em branco
+
+                double nota = Double.parseDouble(notaStr);
 
                 String resultado = turmaController.registrarNota(turmaSelecionada.getId(), matricula, nota);
                 if (!resultado.startsWith("Nota registrada")) {
@@ -216,21 +216,27 @@ public class NotaFinalView extends javax.swing.JFrame {
     private javax.swing.JTable tabelaNotas;
     // End of variables declaration//GEN-END:variables
 
-    private void carregarTurmas() {
-        List<Turma> turmas = turmaController.listarTodasTurmas();
-        cmbTurma.removeAllItems();
-
-        for (Turma t : turmas) {
-            cmbTurma.addItem(t);
-        }
-        cmbTurma.setSelectedIndex(-1); // Nenhuma selecionada por padrão
-    }
-
+    // Permite editar só a coluna de nota!
     private void configurarTabela() {
         tabelaNotas.setModel(new javax.swing.table.DefaultTableModel(
             new Object[][] {},
             new String[] { "Aluno", "Nota" }
-        ));
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 1; // Só a coluna Nota é editável
+            }
+        });
+    }
+
+    private void carregarTurmas() {
+        cmbTurma.removeAllItems();
+        cmbTurma.addItem(null); // padrão, vazio
+        List<Turma> turmas = turmaController.listarTodasTurmas();
+        for (Turma t : turmas) {
+            cmbTurma.addItem(t);
+        }
+        cmbTurma.setSelectedIndex(-1); // Nenhuma selecionada por padrão
     }
 
     private void carregarNotasNaTabela() {
@@ -246,9 +252,9 @@ public class NotaFinalView extends javax.swing.JFrame {
             return;
         }
 
-        Map<Aluno, Double> notas = turmaController.listarNotasFinais(turmaSelecionada.getId());
+        Map<Integer, Double> notas = turmaController.listarNotasFinais(turmaSelecionada.getId());
         for (Aluno aluno : alunos) {
-            Double nota = notas.get(aluno);
+            Double nota = notas.get(aluno.getMatricula());
             model.addRow(new Object[] {
                 aluno.getMatricula() + " - " + aluno.getNome(),
                 nota != null ? nota : ""

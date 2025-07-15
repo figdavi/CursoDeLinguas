@@ -12,6 +12,7 @@ import controller.TurmaController;
 import java.util.logging.Logger;
 import model.Turma;
 import model.Lingua;
+import model.Turma.Nivel;
 
 /**
  *
@@ -231,15 +232,6 @@ public class TurmaView extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         try {
-            if (txtId.getText().trim().isEmpty() ||
-                txtPreco.getText().trim().isEmpty() ||
-                txtDataInicio.getText().trim().isEmpty() ||
-                txtDataFim.getText().trim().isEmpty() ||
-                comboLingua.getSelectedIndex() == -1 ||
-                comboNivel.getSelectedIndex() == -1) {
-                JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
-                return;
-            }
             int id = Integer.parseInt(txtId.getText().trim());
             Lingua lingua = (Lingua) comboLingua.getSelectedItem();
             Turma.Nivel nivel = (Turma.Nivel) comboNivel.getSelectedItem();
@@ -263,15 +255,6 @@ public class TurmaView extends javax.swing.JFrame {
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         try {
-            if (txtId.getText().trim().isEmpty() ||
-                txtPreco.getText().trim().isEmpty() ||
-                txtDataInicio.getText().trim().isEmpty() ||
-                txtDataFim.getText().trim().isEmpty() ||
-                comboLingua.getSelectedIndex() == -1 ||
-                comboNivel.getSelectedIndex() == -1) {
-                JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
-                return;
-            }
             int id = Integer.parseInt(txtId.getText().trim());
             Lingua lingua = (Lingua) comboLingua.getSelectedItem();
             Turma.Nivel nivel = (Turma.Nivel) comboNivel.getSelectedItem();
@@ -298,11 +281,15 @@ public class TurmaView extends javax.swing.JFrame {
         int linha = tabelaTurmas.getSelectedRow();
         if (linha != -1) {
             int id = Integer.parseInt(tabelaTurmas.getValueAt(linha, 0).toString());
-            String msg = turmaController.excluirTurma(id);
-            JOptionPane.showMessageDialog(this, msg);
-            if (msg.contains("sucesso")) {
-                atualizarTabela();
-                limparCampos();
+            int confirm = JOptionPane.showConfirmDialog(this, "Deseja excluir a turma selecionada?",
+                    "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                String resultado = turmaController.excluirTurma(id);
+                JOptionPane.showMessageDialog(this, resultado);
+                if (resultado.contains("sucesso")) {
+                    atualizarTabela();
+                    limparCampos();
+                }
             }
         } else {
             JOptionPane.showMessageDialog(this, "Selecione uma turma para excluir.");
@@ -317,12 +304,30 @@ public class TurmaView extends javax.swing.JFrame {
         int linha = tabelaTurmas.getSelectedRow();
         if (linha != -1) {
             txtId.setText(tabelaTurmas.getValueAt(linha, 0).toString());
-            comboLingua.setSelectedItem(tabelaTurmas.getValueAt(linha, 1).toString());
-            comboNivel.setSelectedItem(tabelaTurmas.getValueAt(linha, 2).toString());
             txtPreco.setText(tabelaTurmas.getValueAt(linha, 3).toString());
             txtDataInicio.setText(tabelaTurmas.getValueAt(linha, 4).toString());
             txtDataFim.setText(tabelaTurmas.getValueAt(linha, 5).toString());
             txtId.setEditable(false);
+            
+            // Seleciona corretamente a Lingua no ComboBox
+            String linguaStr = tabelaTurmas.getValueAt(linha, 1).toString();
+            for (int i = 0; i < comboLingua.getItemCount(); i++) {
+                Lingua l = (Lingua) comboLingua.getItemAt(i);
+                if (l.toString().equals(linguaStr)) {
+                    comboLingua.setSelectedIndex(i);
+                    break;
+                }
+            }
+            
+            // Seleciona corretamente o Nivel no ComboBox
+            String nivelStr = tabelaTurmas.getValueAt(linha, 2).toString();
+            for (int i = 0; i < comboNivel.getItemCount(); i++) {
+                Nivel n = (Nivel) comboNivel.getItemAt(i);
+                if (n.toString().equals(nivelStr)) {
+                    comboNivel.setSelectedIndex(i);
+                    break;
+                }
+            }
         }
     }//GEN-LAST:event_tabelaTurmasMouseClicked
 

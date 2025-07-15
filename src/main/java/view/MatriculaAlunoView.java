@@ -4,13 +4,12 @@
  */
 package view;
 
-import dao.TurmaDAO;
-import dao.AlunoDAO;
+import controller.AlunoController;
+import controller.TurmaController;
 import model.Turma;
 import model.Aluno;
 import javax.swing.*;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -18,10 +17,8 @@ import java.util.logging.Logger;
  * @author davis
  */
 public class MatriculaAlunoView extends javax.swing.JFrame {
-    private TurmaDAO turmaDAO = new TurmaDAO();
-    private AlunoDAO alunoDAO = new AlunoDAO();
-    private List<Aluno> alunosCache = new ArrayList<>();
-    private List<Turma> turmasCache = new ArrayList<>();
+    private final TurmaController turmaController = new TurmaController();
+    private final AlunoController alunoController = new AlunoController();
     private static final Logger logger = Logger.getLogger(MatriculaAlunoView.class.getName());
 
     public MatriculaAlunoView() {
@@ -33,7 +30,7 @@ public class MatriculaAlunoView extends javax.swing.JFrame {
         carregarAlunos();
         carregarTurmas();
         atualizarTabela();
-        setVisible(true); 
+        setVisible(true);
     }
 
     /**
@@ -45,20 +42,17 @@ public class MatriculaAlunoView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cmbAluno = new javax.swing.JComboBox<>();
-        cmbTurma = new javax.swing.JComboBox<>();
         btnMatricular = new javax.swing.JButton();
         btnRemover = new javax.swing.JButton();
         scrollMatriculados = new javax.swing.JScrollPane();
         tabelaMatriculados = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        btnVoltar = new javax.swing.JButton();
+        cmbTurma = new javax.swing.JComboBox();
+        cmbAluno = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        cmbAluno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cmbTurma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnMatricular.setText("Matricular");
         btnMatricular.addActionListener(new java.awt.event.ActionListener() {
@@ -85,16 +79,22 @@ public class MatriculaAlunoView extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tabelaMatriculados.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaMatriculadosClick(evt);
-            }
-        });
         scrollMatriculados.setViewportView(tabelaMatriculados);
 
         jLabel1.setText("Aluno:");
 
         jLabel2.setText("Turma:");
+
+        btnVoltar.setText("Voltar");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarActionPerformed(evt);
+            }
+        });
+
+        cmbTurma.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        cmbAluno.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,17 +107,19 @@ public class MatriculaAlunoView extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel1)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(btnMatricular)
-                                    .addGap(70, 70, 70)
-                                    .addComponent(btnRemover))
-                                .addComponent(cmbAluno, javax.swing.GroupLayout.Alignment.LEADING, 0, 419, Short.MAX_VALUE)
-                                .addComponent(cmbTurma, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(cmbTurma, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(123, 123, 123)
-                        .addComponent(scrollMatriculados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(315, Short.MAX_VALUE))
+                        .addGap(109, 109, 109)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnMatricular)
+                                .addGap(28, 28, 28)
+                                .addComponent(btnRemover)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnVoltar))
+                            .addComponent(scrollMatriculados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(329, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,69 +130,59 @@ public class MatriculaAlunoView extends javax.swing.JFrame {
                 .addComponent(cmbAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(jLabel2)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbTurma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnMatricular)
-                            .addComponent(btnRemover))))
-                .addGap(37, 37, 37)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbTurma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(63, 63, 63)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMatricular)
+                    .addComponent(btnRemover)
+                    .addComponent(btnVoltar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(scrollMatriculados, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(321, Short.MAX_VALUE))
+                .addContainerGap(331, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMatricularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatricularActionPerformed
-        int alunoIdx = cmbAluno.getSelectedIndex();
-        int turmaIdx = cmbTurma.getSelectedIndex();
-        if (alunoIdx == -1 || turmaIdx == -1) {
+        Turma turma = (Turma) cmbTurma.getSelectedItem();
+        Aluno aluno = (Aluno) cmbAluno.getSelectedItem();
+        if (turma == null || aluno == null) {
             JOptionPane.showMessageDialog(this, "Selecione um aluno e uma turma.");
             return;
         }
-        Aluno aluno = alunosCache.get(alunoIdx);
-        Turma turma = turmasCache.get(turmaIdx);
-
-        boolean ok = turmaDAO.matricularAluno(turma.getId(), aluno.getMatricula());
-        if (ok) {
-            JOptionPane.showMessageDialog(this, "Aluno matriculado com sucesso!");
-            atualizarTabela();
-        } else {
-            JOptionPane.showMessageDialog(this, "Erro ao matricular aluno (já está matriculado?).");
-        }
+        String resultado = turmaController.matricularAluno(turma.getId(), aluno.getMatricula());
+        JOptionPane.showMessageDialog(this, resultado);
+        atualizarTabela();
     }//GEN-LAST:event_btnMatricularActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        int turmaIdx = cmbTurma.getSelectedIndex();
+        Turma turma = (Turma) cmbTurma.getSelectedItem();
         int linha = tabelaMatriculados.getSelectedRow();
-        if (turmaIdx == -1 || linha == -1) {
+        if (turma == null || linha == -1) {
             JOptionPane.showMessageDialog(this, "Selecione uma turma e um aluno da lista.");
             return;
         }
-        Turma turma = turmasCache.get(turmaIdx);
         int matricula = (int) tabelaMatriculados.getValueAt(linha, 0);
         int confirm = JOptionPane.showConfirmDialog(this,
                 "Deseja remover a matrícula do aluno selecionado?",
                 "Confirmação",
                 JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
-            boolean ok = turmaDAO.desmatricularAluno(turma.getId(), matricula);
-            if (ok) {
-                JOptionPane.showMessageDialog(this, "Matrícula removida com sucesso!");
-                atualizarTabela();
-            } else {
-                JOptionPane.showMessageDialog(this, "Erro ao remover matrícula.");
-            }
+            String resultado = turmaController.desmatricularAluno(turma.getId(), matricula);
+            JOptionPane.showMessageDialog(this, resultado);
+            atualizarTabela();
         }
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void tabelaMatriculadosClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMatriculadosClick
         // TODO add your handling code here:
     }//GEN-LAST:event_tabelaMatriculadosClick
+
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        this.dispose(); // Fecha a janela atual
+    }//GEN-LAST:event_btnVoltarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -220,8 +212,9 @@ public class MatriculaAlunoView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnMatricular;
     private javax.swing.JButton btnRemover;
-    private javax.swing.JComboBox<String> cmbAluno;
-    private javax.swing.JComboBox<String> cmbTurma;
+    private javax.swing.JButton btnVoltar;
+    private javax.swing.JComboBox cmbAluno;
+    private javax.swing.JComboBox cmbTurma;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane scrollMatriculados;
@@ -229,17 +222,15 @@ public class MatriculaAlunoView extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void atualizarTabela() {
-        int turmaIdx = cmbTurma.getSelectedIndex();
-        if (turmaIdx == -1) {
+        Turma turma = (Turma) cmbTurma.getSelectedItem();
+        if (turma == null) {
             tabelaMatriculados.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][] {}, new String[] {"Matrícula", "Nome", "Telefone"}));
             return;
         }
-        Turma turma = turmasCache.get(turmaIdx);
-        List<Aluno> alunos = turmaDAO.listarAlunosMatriculados(turma.getId());
+        List<Aluno> alunos = turmaController.listarAlunosMatriculados(turma.getId());
         String[] colunas = {"Matrícula", "Nome", "Telefone"};
         Object[][] dados = new Object[alunos.size()][3];
-
         for (int i = 0; i < alunos.size(); i++) {
             Aluno a = alunos.get(i);
             dados[i][0] = a.getMatricula();
@@ -248,22 +239,27 @@ public class MatriculaAlunoView extends javax.swing.JFrame {
         }
         tabelaMatriculados.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
     }
-    
+
     private void carregarAlunos() {
         cmbAluno.removeAllItems();
-        alunosCache = alunoDAO.listarTodos();
-        for (Aluno a : alunosCache) {
-            cmbAluno.addItem(a.getMatricula() + " - " + a.getNome());
+        cmbAluno.addItem(null); // item vazio
+        List<Aluno> alunos = alunoController.listarTodosAlunos();
+        for (Aluno a : alunos) {
+            cmbAluno.addItem(a); // usa o toString do Aluno!
         }
         cmbAluno.setSelectedIndex(-1);
     }
-    
+
     private void carregarTurmas() {
         cmbTurma.removeAllItems();
-        turmasCache = turmaDAO.listarTodos();
-        for (Turma t : turmasCache) {
-            cmbTurma.addItem(t.getId() + " - " + t.getLingua() + " (" + t.getNivel() + ")");
+        cmbTurma.addItem(null); // item vazio
+        List<Turma> turmas = turmaController.listarTodasTurmas();
+        for (Turma t : turmas) {
+            cmbTurma.addItem(t); // usa o toString do Turma!
         }
         cmbTurma.setSelectedIndex(-1);
+
+        // Atualiza a tabela ao trocar de turma
+        cmbTurma.addActionListener(e -> atualizarTabela());
     }
 }
