@@ -4,12 +4,11 @@
  */
 package dao;
 
+import model.Lingua;
 import model.Professor;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ProfessorDAO {
 
@@ -22,7 +21,7 @@ public class ProfessorDAO {
             pstmt.setString(3, professor.getEndereco());
             pstmt.setString(4, professor.getTelefone());
             pstmt.setDouble(5, professor.getValorHora());
-            pstmt.setString(6, linguasToString(professor.getLinguas()));
+            pstmt.setString(6, Lingua.toString(professor.getLinguas()));
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.out.println("Erro ao inserir professor: " + e.getMessage());
@@ -37,7 +36,7 @@ public class ProfessorDAO {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                List<Professor.Lingua> linguas = stringToLinguas(rs.getString("linguas"));
+                List<Lingua> linguas = Lingua.fromString(rs.getString("linguas"));
                 Professor p = new Professor(
                         rs.getInt("matricula"),
                         rs.getString("nome"),
@@ -61,7 +60,7 @@ public class ProfessorDAO {
             pstmt.setInt(1, matricula);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                List<Professor.Lingua> linguas = stringToLinguas(rs.getString("linguas"));
+                List<Lingua> linguas = Lingua.fromString(rs.getString("linguas"));
                 return new Professor(
                         rs.getInt("matricula"),
                         rs.getString("nome"),
@@ -85,7 +84,7 @@ public class ProfessorDAO {
             pstmt.setString(2, professor.getEndereco());
             pstmt.setString(3, professor.getTelefone());
             pstmt.setDouble(4, professor.getValorHora());
-            pstmt.setString(5, linguasToString(professor.getLinguas()));
+            pstmt.setString(5, Lingua.toString(professor.getLinguas()));
             pstmt.setInt(6, professor.getMatricula());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -104,17 +103,5 @@ public class ProfessorDAO {
             System.out.println("Erro ao excluir professor: " + e.getMessage());
             return false;
         }
-    }
-
-    private String linguasToString(List<Professor.Lingua> linguas) {
-        return linguas.stream().map(Enum::name).collect(Collectors.joining(","));
-    }
-
-    private List<Professor.Lingua> stringToLinguas(String s) {
-        if (s == null || s.isBlank()) return new ArrayList<>();
-        return Arrays.stream(s.split(","))
-                .map(String::trim)
-                .map(Professor.Lingua::valueOf)
-                .collect(Collectors.toList());
     }
 }

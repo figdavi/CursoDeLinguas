@@ -5,11 +5,27 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class Turma {
-    public enum Lingua { INGLES, ESPANHOL, FRANCES }
-    public enum Nivel { INICIANTE, INTERMEDIARIO, AVANCADO }
+    public enum Nivel { 
+        INICIANTE("Iniciante"), 
+        INTERMEDIARIO("Intermediário"), 
+        AVANCADO("Avançado");
+    
+        private final String nome;
+        Nivel(String nome) { this.nome = nome; }
+        
+        @Override
+        public String toString() { return nome; }
+        
+        public static String allToString() {
+            return Arrays.stream(Nivel.values())
+                    .map(Nivel::toString)
+                    .collect(Collectors.joining(", "));
+        }
+    }
 
     private int id;
     private LocalDate dataInicio;

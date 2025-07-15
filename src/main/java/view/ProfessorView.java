@@ -15,7 +15,7 @@ import controller.ProfessorController;
  */
 public class ProfessorView extends javax.swing.JFrame {
     
-    private ProfessorController professorController = new ProfessorController();
+    private final ProfessorController professorController = new ProfessorController();
     private static final Logger logger = Logger.getLogger(ProfessorView.class.getName());
 
     /**
@@ -54,6 +54,8 @@ public class ProfessorView extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tabelaProfessores = new javax.swing.JTable();
         btnVoltar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -122,42 +124,52 @@ public class ProfessorView extends javax.swing.JFrame {
             }
         });
 
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lbMatricula)
+                    .addComponent(lbEndereco)
+                    .addComponent(lbLinguas)
+                    .addComponent(lbNome)
+                    .addComponent(lbValorHora)
+                    .addComponent(lbTelefone)
+                    .addComponent(txtNome)
+                    .addComponent(txtEndereco)
+                    .addComponent(txtTelefone)
+                    .addComponent(txtMatricula)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtLinguas))
+                    .addComponent(txtValorHora, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 249, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
                         .addComponent(btnCadastrar)
                         .addGap(27, 27, 27)
                         .addComponent(btnAtualizar)
                         .addGap(18, 18, 18)
                         .addComponent(btnExcluir)
                         .addGap(18, 18, 18)
-                        .addComponent(btnLimpar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lbMatricula)
-                            .addComponent(lbEndereco)
-                            .addComponent(lbLinguas)
-                            .addComponent(lbNome)
-                            .addComponent(lbValorHora)
-                            .addComponent(lbTelefone)
-                            .addComponent(txtNome)
-                            .addComponent(txtEndereco)
-                            .addComponent(txtTelefone)
-                            .addComponent(txtMatricula)
-                            .addComponent(txtLinguas)
-                            .addComponent(txtValorHora, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(11, 11, 11)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
-                .addComponent(btnVoltar)
-                .addGap(27, 27, 27))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jScrollPane2)
+                        .addComponent(btnLimpar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                        .addComponent(btnVoltar)
+                        .addGap(21, 21, 21))
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -186,8 +198,10 @@ public class ProfessorView extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(lbLinguas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtLinguas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtLinguas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrar)
                     .addComponent(btnExcluir)
@@ -196,7 +210,7 @@ public class ProfessorView extends javax.swing.JFrame {
                     .addComponent(btnVoltar))
                 .addGap(31, 31, 31)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -211,7 +225,7 @@ public class ProfessorView extends javax.swing.JFrame {
             double valorHora = Double.parseDouble(txtValorHora.getText().trim());
             String linguasTexto = txtLinguas.getText().trim();
 
-            List<model.Professor.Lingua> linguas;
+            List<model.Lingua> linguas;
             try {
                 linguas = parseLinguas(linguasTexto);
             } catch (IllegalArgumentException ex) {
@@ -242,7 +256,7 @@ public class ProfessorView extends javax.swing.JFrame {
             double valorHora = Double.parseDouble(txtValorHora.getText().trim());
             String linguasTexto = txtLinguas.getText().trim();
 
-            List<model.Professor.Lingua> linguas;
+            List<model.Lingua> linguas;
             try {
                 linguas = parseLinguas(linguasTexto);
             } catch (IllegalArgumentException ex) {
@@ -337,6 +351,8 @@ public class ProfessorView extends javax.swing.JFrame {
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnVoltar;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbEndereco;
     private javax.swing.JLabel lbLinguas;
@@ -382,10 +398,10 @@ public class ProfessorView extends javax.swing.JFrame {
         txtMatricula.setEditable(true);
     }
 
-    private List<model.Professor.Lingua> parseLinguas(String linguasTexto) {
-        List<model.Professor.Lingua> linguas = new java.util.ArrayList<>();
+    private List<model.Lingua> parseLinguas(String linguasTexto) {
+        List<model.Lingua> linguas = new java.util.ArrayList<>();
         for (String s : linguasTexto.split("\\s*,\\s*")) {
-            linguas.add(model.Professor.Lingua.valueOf(s.trim().toUpperCase()));
+            linguas.add(model.Lingua.valueOf(s.trim().toUpperCase()));
         }
         return linguas;
     }

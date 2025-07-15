@@ -4,6 +4,7 @@
  */
 package controller;
 
+import model.Lingua;
 import model.Professor;
 import dao.ProfessorDAO;
 import java.util.List;
@@ -25,7 +26,7 @@ public class ProfessorController {
             String endereco,
             String telefone,
             double valorHora,
-            List<Professor.Lingua> linguas
+            List<Lingua> linguas
     ) {
         if (matricula <= 0) return "Matrícula deve ser positiva.";
         if (nome == null || nome.trim().isEmpty()) return "Nome obrigatório.";
@@ -48,7 +49,7 @@ public class ProfessorController {
             String endereco,
             String telefone,
             double valorHora,
-            List<Professor.Lingua> linguas
+            List<Lingua> linguas
     ) {
         if (matricula <= 0) return "Matrícula deve ser positiva.";
         if (nome == null || nome.trim().isEmpty()) return "Nome obrigatório.";

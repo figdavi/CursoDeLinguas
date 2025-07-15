@@ -8,27 +8,27 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JOptionPane;
-import java.util.Arrays;
 import controller.TurmaController;
 import java.util.logging.Logger;
 import model.Turma;
+import model.Lingua;
 
 /**
  *
  * @author davis
  */
 public class TurmaView extends javax.swing.JFrame {
-    private TurmaController turmaController = new TurmaController();
+    private final TurmaController turmaController = new TurmaController();
     private static final Logger logger = Logger.getLogger(TurmaView.class.getName());
 
     public TurmaView() {
         initComponents();
         comboLingua.removeAllItems();
-        for (Turma.Lingua l : Turma.Lingua.values()) comboLingua.addItem(l.toString());
+        for (Lingua l : Lingua.values()) comboLingua.addItem(l);
         comboLingua.setSelectedIndex(-1);
 
         comboNivel.removeAllItems();
-        for (Turma.Nivel n : Turma.Nivel.values()) comboNivel.addItem(n.toString());
+        for (Turma.Nivel n : Turma.Nivel.values()) comboNivel.addItem(n);
         comboNivel.setSelectedIndex(-1);
 
         atualizarTabela();
@@ -53,7 +53,7 @@ public class TurmaView extends javax.swing.JFrame {
         txtDataFim = new javax.swing.JTextField();
         txtDataInicio = new javax.swing.JTextField();
         txtId = new javax.swing.JTextField();
-        comboNivel = new javax.swing.JComboBox<>();
+        comboNivel = new javax.swing.JComboBox();
         btnCadastrar = new javax.swing.JButton();
         btnAtualizar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
@@ -61,7 +61,7 @@ public class TurmaView extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tabelaTurmas = new javax.swing.JTable();
         btnVoltar3 = new javax.swing.JButton();
-        comboLingua = new javax.swing.JComboBox<>();
+        comboLingua = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -241,8 +241,8 @@ public class TurmaView extends javax.swing.JFrame {
                 return;
             }
             int id = Integer.parseInt(txtId.getText().trim());
-            Turma.Lingua lingua = Turma.Lingua.valueOf(comboLingua.getSelectedItem().toString());
-            Turma.Nivel nivel = Turma.Nivel.valueOf(comboNivel.getSelectedItem().toString());
+            Lingua lingua = (Lingua) comboLingua.getSelectedItem();
+            Turma.Nivel nivel = (Turma.Nivel) comboNivel.getSelectedItem();
             double preco = Double.parseDouble(txtPreco.getText().trim());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate inicio = LocalDate.parse(txtDataInicio.getText().trim(), formatter);
@@ -256,8 +256,8 @@ public class TurmaView extends javax.swing.JFrame {
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "ID ou Preço inválidos.");
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, "Língua ou Nível inválidos! Use: " + Arrays.toString(Turma.Lingua.values()) + " / " + Arrays.toString(Turma.Nivel.values()));
+        } catch (IllegalArgumentException e) {            
+            JOptionPane.showMessageDialog(this, "Língua ou Nível inválidos! Use: " + Lingua.allToString() + " / " + Turma.Nivel.allToString());
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
@@ -273,8 +273,8 @@ public class TurmaView extends javax.swing.JFrame {
                 return;
             }
             int id = Integer.parseInt(txtId.getText().trim());
-            Turma.Lingua lingua = Turma.Lingua.valueOf(comboLingua.getSelectedItem().toString());
-            Turma.Nivel nivel = Turma.Nivel.valueOf(comboNivel.getSelectedItem().toString());
+            Lingua lingua = (Lingua) comboLingua.getSelectedItem();
+            Turma.Nivel nivel = (Turma.Nivel) comboNivel.getSelectedItem();
             double preco = Double.parseDouble(txtPreco.getText().trim());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate inicio = LocalDate.parse(txtDataInicio.getText().trim(), formatter);
@@ -290,7 +290,7 @@ public class TurmaView extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "ID ou Preço inválidos.");
         } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, "Língua ou Nível inválidos! Use: " + Arrays.toString(Turma.Lingua.values()) + " / " + Arrays.toString(Turma.Nivel.values()));
+            JOptionPane.showMessageDialog(this, "Língua ou Nível inválidos! Use: " + Lingua.allToString() + " / " + Turma.Nivel.allToString());
         }
     }//GEN-LAST:event_btnAtualizarActionPerformed
 
@@ -361,8 +361,8 @@ public class TurmaView extends javax.swing.JFrame {
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnVoltar3;
-    private javax.swing.JComboBox<String> comboLingua;
-    private javax.swing.JComboBox<String> comboNivel;
+    private javax.swing.JComboBox comboLingua;
+    private javax.swing.JComboBox comboNivel;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbDataFim;
     private javax.swing.JLabel lbDataInicio;

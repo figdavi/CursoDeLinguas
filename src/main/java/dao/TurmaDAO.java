@@ -4,6 +4,7 @@
  */
 package dao;
 
+import model.Lingua;
 import model.Turma;
 import model.Aluno;
 import java.sql.*;
@@ -20,8 +21,8 @@ public class TurmaDAO {
             pstmt.setInt(1, turma.getId());
             pstmt.setString(2, turma.getDataInicio().toString());
             pstmt.setString(3, turma.getDataFim().toString());
-            pstmt.setString(4, turma.getLingua().toString());
-            pstmt.setString(5, turma.getNivel().toString());
+            pstmt.setString(4, turma.getLingua().name());
+            pstmt.setString(5, turma.getNivel().name());
             pstmt.setDouble(6, turma.getPreco());
             pstmt.executeUpdate();
             return true;
@@ -37,8 +38,8 @@ public class TurmaDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, turma.getDataInicio().toString());
             pstmt.setString(2, turma.getDataFim().toString());
-            pstmt.setString(3, turma.getLingua().toString());
-            pstmt.setString(4, turma.getNivel().toString());
+            pstmt.setString(3, turma.getLingua().name());
+            pstmt.setString(4, turma.getNivel().name());
             pstmt.setDouble(5, turma.getPreco());
             pstmt.setInt(6, turma.getId());
             int linhas = pstmt.executeUpdate();
@@ -73,7 +74,7 @@ public class TurmaDAO {
                     rs.getInt("id"),
                     LocalDate.parse(rs.getString("dataInicio")),
                     LocalDate.parse(rs.getString("dataFim")),
-                    Turma.Lingua.valueOf(rs.getString("lingua")),
+                    Lingua.valueOf(rs.getString("lingua")),
                     Turma.Nivel.valueOf(rs.getString("nivel")),
                     rs.getDouble("preco")
                 );
@@ -95,7 +96,7 @@ public class TurmaDAO {
                     rs.getInt("id"),
                     LocalDate.parse(rs.getString("dataInicio")),
                     LocalDate.parse(rs.getString("dataFim")),
-                    Turma.Lingua.valueOf(rs.getString("lingua")),
+                    Lingua.valueOf(rs.getString("lingua")),
                     Turma.Nivel.valueOf(rs.getString("nivel")),
                     rs.getDouble("preco")
                 ));

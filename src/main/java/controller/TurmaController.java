@@ -4,6 +4,7 @@
  */
 package controller;
 
+import model.Lingua;
 import model.Turma;
 import model.Aluno;
 import dao.TurmaDAO;
@@ -22,7 +23,7 @@ public class TurmaController {
         return turmaDAO.buscarPorId(id);
     }
 
-    public String inserirTurma(int id, LocalDate dataInicio, LocalDate dataFim, Turma.Lingua lingua, Turma.Nivel nivel, double preco) {
+    public String inserirTurma(int id, LocalDate dataInicio, LocalDate dataFim, Lingua lingua, Turma.Nivel nivel, double preco) {
         if (id <= 0) return "ID deve ser positivo.";
         if (dataInicio == null) return "Data de início obrigatória.";
         if (dataFim == null) return "Data de fim obrigatória.";
@@ -38,7 +39,7 @@ public class TurmaController {
         return ok ? "Turma cadastrada com sucesso!" : "Erro ao cadastrar turma.";
     }
 
-    public String atualizarTurma(int id, LocalDate dataInicio, LocalDate dataFim, Turma.Lingua lingua, Turma.Nivel nivel, double preco) {
+    public String atualizarTurma(int id, LocalDate dataInicio, LocalDate dataFim, Lingua lingua, Turma.Nivel nivel, double preco) {
         if (id <= 0) return "ID deve ser positivo.";
         if (dataInicio == null) return "Data de início obrigatória.";
         if (dataFim == null) return "Data de fim obrigatória.";

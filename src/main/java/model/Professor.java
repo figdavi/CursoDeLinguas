@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Professor {
-    public enum Lingua { INGLES, ESPANHOL, FRANCES }
-
     private int matricula;
     private String nome;
     private String endereco;
