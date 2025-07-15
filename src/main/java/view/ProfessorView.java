@@ -4,6 +4,7 @@
  */
 package view;
 
+import model.Lingua;
 import java.util.List;
 import javax.swing.JOptionPane;
 import java.util.logging.Logger;
@@ -23,6 +24,12 @@ public class ProfessorView extends javax.swing.JFrame {
      */
     public ProfessorView() {
         initComponents();
+        
+        javax.swing.DefaultListModel<Lingua> model = new javax.swing.DefaultListModel<>();
+        for (Lingua l : Lingua.values()) model.addElement(l);
+        listLinguas.setModel(model);
+        
+        listLinguas.setSelectedIndex(-1);
         atualizarTabela(); // <- carrega os dados ao iniciar a tela
     }
 
@@ -45,7 +52,6 @@ public class ProfessorView extends javax.swing.JFrame {
         txtEndereco = new javax.swing.JTextField();
         txtTelefone = new javax.swing.JTextField();
         txtMatricula = new javax.swing.JTextField();
-        txtLinguas = new javax.swing.JTextField();
         txtValorHora = new javax.swing.JTextField();
         btnCadastrar = new javax.swing.JButton();
         btnAtualizar = new javax.swing.JButton();
@@ -54,8 +60,8 @@ public class ProfessorView extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tabelaProfessores = new javax.swing.JTable();
         btnVoltar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        listLinguas = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -124,41 +130,26 @@ public class ProfessorView extends javax.swing.JFrame {
             }
         });
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        listLinguas.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3" };
             public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+            public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        listLinguas.setVisibleRowCount(3);
+        jScrollPane3.setViewportView(listLinguas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lbMatricula)
-                    .addComponent(lbEndereco)
-                    .addComponent(lbLinguas)
-                    .addComponent(lbNome)
-                    .addComponent(lbValorHora)
-                    .addComponent(lbTelefone)
-                    .addComponent(txtNome)
-                    .addComponent(txtEndereco)
-                    .addComponent(txtTelefone)
-                    .addComponent(txtMatricula)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtLinguas))
-                    .addComponent(txtValorHora, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 249, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnCadastrar)
                         .addGap(27, 27, 27)
                         .addComponent(btnAtualizar)
@@ -166,11 +157,24 @@ public class ProfessorView extends javax.swing.JFrame {
                         .addComponent(btnExcluir)
                         .addGap(18, 18, 18)
                         .addComponent(btnLimpar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnVoltar)
-                        .addGap(21, 21, 21))
-                    .addComponent(jScrollPane2))
-                .addContainerGap())
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbMatricula)
+                            .addComponent(lbEndereco)
+                            .addComponent(lbLinguas)
+                            .addComponent(lbNome)
+                            .addComponent(lbValorHora)
+                            .addComponent(lbTelefone)
+                            .addComponent(txtNome)
+                            .addComponent(txtEndereco)
+                            .addComponent(txtTelefone)
+                            .addComponent(txtMatricula)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtValorHora, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,19 +202,17 @@ public class ProfessorView extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(lbLinguas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtLinguas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrar)
                     .addComponent(btnExcluir)
                     .addComponent(btnLimpar)
                     .addComponent(btnAtualizar)
                     .addComponent(btnVoltar))
-                .addGap(31, 31, 31)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
 
         pack();
@@ -223,13 +225,12 @@ public class ProfessorView extends javax.swing.JFrame {
             String endereco = txtEndereco.getText().trim();
             String telefone = txtTelefone.getText().trim();
             double valorHora = Double.parseDouble(txtValorHora.getText().trim());
-            String linguasTexto = txtLinguas.getText().trim();
-
-            List<model.Lingua> linguas;
+            
+            List<Lingua> linguas;
             try {
-                linguas = parseLinguas(linguasTexto);
+                linguas = listLinguas.getSelectedValuesList();
             } catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(this, "Língua(s) inválida(s). Use: INGLES, FRANCES, ESPANHOL.");
+                JOptionPane.showMessageDialog(this, "Língua(s) inválida(s). Use: " + Lingua.allToString());
                 return;
             }
 
@@ -254,13 +255,12 @@ public class ProfessorView extends javax.swing.JFrame {
             String endereco = txtEndereco.getText().trim();
             String telefone = txtTelefone.getText().trim();
             double valorHora = Double.parseDouble(txtValorHora.getText().trim());
-            String linguasTexto = txtLinguas.getText().trim();
 
             List<model.Lingua> linguas;
             try {
-                linguas = parseLinguas(linguasTexto);
+                linguas = listLinguas.getSelectedValuesList();
             } catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(this, "Língua(s) inválida(s). Use: INGLES, FRANCES, ESPANHOL.");
+                JOptionPane.showMessageDialog(this, "Língua(s) inválida(s). Use: " + Lingua.allToString());
                 return;
             }
 
@@ -311,7 +311,27 @@ public class ProfessorView extends javax.swing.JFrame {
             txtEndereco.setText(tabelaProfessores.getValueAt(linha, 2).toString());
             txtTelefone.setText(tabelaProfessores.getValueAt(linha, 3).toString());
             txtValorHora.setText(tabelaProfessores.getValueAt(linha, 4).toString());
-            txtLinguas.setText(tabelaProfessores.getValueAt(linha, 5).toString());
+
+            String[] linguasSelecionadas = tabelaProfessores.getValueAt(linha, 5).toString().split("\\s*,\\s*");
+            
+            javax.swing.ListModel<Lingua> model = listLinguas.getModel();
+            List<Integer> indices = new java.util.ArrayList<>();
+
+            // Comparar cada elemento da jList com as linguas selecionadas
+            for (String lingua : linguasSelecionadas) {
+                for (int i = 0; i < model.getSize(); i++) {
+                    if (model.getElementAt(i).name().equalsIgnoreCase(lingua)) {
+                        // Adiciona a posição do elemento i da jList como indice a ser selecionado
+                        indices.add(i);
+                        break;
+                    }
+                }
+            }
+            // Trasforma List<Integer> para Array[int]
+            int[] array = new int[indices.size()];
+            for (int i = 0; i < indices.size(); i++) array[i] = indices.get(i);
+            listLinguas.setSelectedIndices(array);
+
             txtMatricula.setEditable(false);
         }
     }//GEN-LAST:event_tabelaProfessoresMouseClicked
@@ -351,18 +371,17 @@ public class ProfessorView extends javax.swing.JFrame {
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnVoltar;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lbEndereco;
     private javax.swing.JLabel lbLinguas;
     private javax.swing.JLabel lbMatricula;
     private javax.swing.JLabel lbNome;
     private javax.swing.JLabel lbTelefone;
     private javax.swing.JLabel lbValorHora;
+    private javax.swing.JList listLinguas;
     private javax.swing.JTable tabelaProfessores;
     private javax.swing.JTextField txtEndereco;
-    private javax.swing.JTextField txtLinguas;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtTelefone;
@@ -394,7 +413,7 @@ public class ProfessorView extends javax.swing.JFrame {
         txtEndereco.setText("");
         txtTelefone.setText("");
         txtValorHora.setText("");
-        txtLinguas.setText("");
+        listLinguas.setSelectedIndex(-1);
         txtMatricula.setEditable(true);
     }
 
