@@ -9,6 +9,8 @@
 	- [x] Relatorio
 	- [x] Notas
 - [x] Adicionar métodos .toString() aos modelos necessários
+- [ ] setTitle em Views
+- [ ] Melhorar interface das Views
 - [ ] Transformar Usuario em Enum em MenuPrincipalView
 - [ ] Consertar relatório
 - [ ] Testar essa parte de matricular aluno na turma, e se ele vai aparecer na tabela da NotaFinalView

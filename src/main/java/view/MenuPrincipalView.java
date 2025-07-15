@@ -44,6 +44,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         btnSair = new javax.swing.JButton();
         btnMatricularAluno = new javax.swing.JButton();
         cmbUsuario = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -124,9 +125,11 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         cmbUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemSelected(evt);
+                cmbUsuarioActionPerformed(evt);
             }
         });
+
+        jLabel2.setText("Usuário:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -135,6 +138,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
                     .addComponent(cmbUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMatricularAluno)
                     .addComponent(btnSair)
@@ -152,6 +156,8 @@ public class MenuPrincipalView extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAluno)
@@ -196,7 +202,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         pack();
@@ -242,9 +248,9 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         new MatriculaAlunoView().setVisible(true);
     }//GEN-LAST:event_btnMatricularAlunoActionPerformed
 
-    private void itemSelected(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSelected
+    private void cmbUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbUsuarioActionPerformed
         aplicarPermissoes((String) cmbUsuario.getSelectedItem());
-    }//GEN-LAST:event_itemSelected
+    }//GEN-LAST:event_cmbUsuarioActionPerformed
     
     /**
      * @param args the command line arguments
@@ -284,6 +290,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
     private javax.swing.JButton btnTurma;
     private javax.swing.JComboBox<String> cmbUsuario;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
