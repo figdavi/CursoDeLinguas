@@ -413,15 +413,7 @@ public class ProfessorView extends javax.swing.JFrame {
         txtEndereco.setText("");
         txtTelefone.setText("");
         txtValorHora.setText("");
-        listLinguas.setSelectedIndex(-1);
+        listLinguas.clearSelection();
         txtMatricula.setEditable(true);
-    }
-
-    private List<model.Lingua> parseLinguas(String linguasTexto) {
-        List<model.Lingua> linguas = new java.util.ArrayList<>();
-        for (String s : linguasTexto.split("\\s*,\\s*")) {
-            linguas.add(model.Lingua.valueOf(s.trim().toUpperCase()));
-        }
-        return linguas;
     }
 }
