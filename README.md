@@ -9,6 +9,10 @@
 	- [x] Relatorio
 	- [x] Notas
 - [x] Adicionar métodos .toString() aos modelos necessários
+- [ ] AulaView não retorna valores para cmbBox ao clicar na tabela
+- [ ] Garantir que data da aula está entre dataInicio e dataFim da turma
+- [ ] Adicionar um meio do gerente alterar o gastoFixoHoraAula?
+	- Necessitaria de salvar o gastoFixoHoraAula com a data no db
 - [ ] setTitle em Views
 - [ ] Melhorar interface das Views
 - [ ] Transformar Usuario em Enum em MenuPrincipalView

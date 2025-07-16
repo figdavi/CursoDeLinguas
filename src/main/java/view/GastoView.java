@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  * @author davis
  */
 public class GastoView extends javax.swing.JFrame {
-    private GastoController gastoController = new GastoController();
+    private final GastoController gastoController = new GastoController();
     private static final Logger logger = Logger.getLogger(GastoView.class.getName());
 
     /**

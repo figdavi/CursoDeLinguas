@@ -16,7 +16,7 @@ public class RelatorioController {
         return RelatorioDAO.calcularGastoRealizado(mes, ano);
     }
 
-    public double calcularGastoPrevisto(int mes, int ano, double valorHoraMedio) {
-        return RelatorioDAO.calcularGastoPrevisto(mes, ano, valorHoraMedio);
+    public double calcularGastoPrevisto(int mes, int ano) {
+        return RelatorioDAO.calcularGastoPrevisto(mes, ano);
     }
 }

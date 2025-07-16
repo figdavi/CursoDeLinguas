@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * @author davis
  */
 public class RelatorioView extends javax.swing.JFrame {   
-    private RelatorioController relatorioController = new RelatorioController();
+    private final RelatorioController relatorioController = new RelatorioController();
     private static final Logger logger = Logger.getLogger(RelatorioView.class.getName());
 
     /**
@@ -47,8 +47,6 @@ public class RelatorioView extends javax.swing.JFrame {
         txtGastoPrevisto = new javax.swing.JLabel();
         txtValorArrecadado = new javax.swing.JLabel();
         btnVoltar = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        txtValorHoraMedio = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -86,49 +84,37 @@ public class RelatorioView extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setText("Valor Hora Médio (R$):");
-
-        txtValorHoraMedio.setText("R$ 0,00");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmbMes, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cmbMes, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel1)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jLabel5)
-                                            .addComponent(jLabel7))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(41, 41, 41)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(txtGastoPrevisto)
-                                                    .addComponent(txtGastoRealizado)
-                                                    .addComponent(txtValorArrecadado)))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(39, 39, 39)
-                                                .addComponent(txtValorHoraMedio))))))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(178, 178, 178)
-                        .addComponent(btnGerarRelatorio)
-                        .addGap(52, 52, 52)
-                        .addComponent(btnVoltar)))
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel5))
+                                .addGap(69, 69, 69)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtGastoPrevisto)
+                                    .addComponent(txtGastoRealizado)
+                                    .addComponent(txtValorArrecadado)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(91, 91, 91)
+                                .addComponent(btnGerarRelatorio)
+                                .addGap(52, 52, 52)
+                                .addComponent(btnVoltar))
+                            .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(574, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -142,11 +128,7 @@ public class RelatorioView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtValorHoraMedio))
-                .addGap(43, 43, 43)
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGerarRelatorio)
                     .addComponent(btnVoltar))
@@ -162,7 +144,7 @@ public class RelatorioView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtGastoPrevisto))
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addContainerGap(175, Short.MAX_VALUE))
         );
 
         pack();
@@ -178,22 +160,14 @@ public class RelatorioView extends javax.swing.JFrame {
             int mes = Integer.parseInt(mesStr.substring(0, 2));
             int ano = Integer.parseInt((String) cmbAno.getSelectedItem());
 
-            // Valor hora médio: se campo vazio, usar 50.0 como padrão
-            double valorHoraMedio;
-            String valorHoraStr = txtValorHoraMedio.getText().trim().replace(',', '.');
-            if (valorHoraStr.isEmpty()) {
-                valorHoraMedio = 50.0;
-            } else {
-                valorHoraMedio = Double.parseDouble(valorHoraStr);
-            }
-
             double valorArrecadado = relatorioController.calcularValorArrecadado(mes, ano);
             double gastoRealizado = relatorioController.calcularGastoRealizado(mes, ano);
-            double gastoPrevisto = relatorioController.calcularGastoPrevisto(mes, ano, valorHoraMedio);
+            double gastoPrevisto = relatorioController.calcularGastoPrevisto(mes, ano);
 
             txtValorArrecadado.setText(String.format("R$ %.2f", valorArrecadado));
             txtGastoRealizado.setText(String.format("R$ %.2f", gastoRealizado));
-            txtGastoPrevisto.setText(String.format("R$ %.2f", gastoPrevisto));
+            txtGastoPrevisto.setText(String.format("R$ %.2f", gastoPrevisto));  
+            
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Valor hora médio inválido!");
@@ -239,11 +213,9 @@ public class RelatorioView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel txtGastoPrevisto;
     private javax.swing.JLabel txtGastoRealizado;
     private javax.swing.JLabel txtValorArrecadado;
-    private javax.swing.JLabel txtValorHoraMedio;
     // End of variables declaration//GEN-END:variables
     
     private void preencherComboBoxMes() {

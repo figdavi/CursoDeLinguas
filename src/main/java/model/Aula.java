@@ -14,6 +14,8 @@ public class Aula {
     private LocalTime horaInicio;
     private LocalTime horaFim;
     private Professor professor; // pode ser null
+    
+    private static int gastoFixoAula = 50;
 
     public Aula(int id, Turma turma, LocalDate data, LocalTime horaInicio, LocalTime horaFim, Professor professor) {
         if (horaFim.isBefore(horaInicio) || horaFim.equals(horaInicio)) {
@@ -34,6 +36,7 @@ public class Aula {
     public LocalTime getHoraInicio() { return horaInicio; }
     public LocalTime getHoraFim() { return horaFim; }
     public Professor getProfessor() { return professor; }
+    public static int getGastoFixoAula() { return gastoFixoAula; }
 
     public void setId(int id) { this.id = id; }
     public void setTurma(Turma turma) { this.turma = turma; }
@@ -41,6 +44,7 @@ public class Aula {
     public void setHoraInicio(LocalTime horaInicio) { this.horaInicio = horaInicio; }
     public void setHoraFim(LocalTime horaFim) { this.horaFim = horaFim; }
     public void setProfessor(Professor professor) { this.professor = professor; }
+    public void setGastoFixoAula(int valor) { gastoFixoAula = valor; }
 
     @Override
     public String toString() {
