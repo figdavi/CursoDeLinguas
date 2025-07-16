@@ -10,13 +10,13 @@
 	- [x] Notas
 - [x] Adicionar métodos .toString() aos modelos necessários
 - [ ] AulaView não retorna valores para cmbBox ao clicar na tabela
+- [ ] Adicionar Relatorio Anual
 - [ ] Garantir que data da aula está entre dataInicio e dataFim da turma
 - [ ] Adicionar um meio do gerente alterar o gastoFixoHoraAula?
 	- Necessitaria de salvar o gastoFixoHoraAula com a data no db
 - [ ] setTitle em Views
 - [ ] Melhorar interface das Views
 - [ ] Transformar Usuario em Enum em MenuPrincipalView
-- [ ] Consertar relatório
 - [ ] Testar essa parte de matricular aluno na turma, e se ele vai aparecer na tabela da NotaFinalView
 - [x] Review TurmaController
 - [ ] Máscaras para hora, data e matrícula
