@@ -5,6 +5,7 @@
 package controller;
 
 import dao.RelatorioDAO;
+import java.util.Map;
 
 public class RelatorioController {
 
@@ -34,5 +35,13 @@ public class RelatorioController {
 
     public double calcularAnualGastoPrevisto(int ano) {
         return RelatorioDAO.calcularAnualGastoPrevisto(ano);
+    }
+    
+    public Map<String, Double> detalharMensalGastoRealizado(int mes, int ano) {
+        return RelatorioDAO.detalharMensalGastoRealizado(mes, ano);
+    }
+
+    public Map<String, Double> detalharAnualGastoRealizado(int ano) {
+        return RelatorioDAO.detalharAnualGastoRealizado(ano);
     }
 }

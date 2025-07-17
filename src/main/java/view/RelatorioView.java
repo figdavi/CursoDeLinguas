@@ -6,6 +6,7 @@ package view;
 
 import controller.RelatorioController;
 import java.time.LocalDate;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import java.util.logging.Logger;
 
@@ -43,13 +44,19 @@ public class RelatorioView extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        txtGastoRealizado = new javax.swing.JLabel();
+        txtGastoRealizadoAula = new javax.swing.JLabel();
         txtGastoPrevisto = new javax.swing.JLabel();
         txtReceitaArrecadada = new javax.swing.JLabel();
         btnVoltar = new javax.swing.JButton();
         btnGerarRelatorioAnual = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         txtReceitaPrevista = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        txtGastoRealizado = new javax.swing.JLabel();
+        txtGastoRealizadoProfessor = new javax.swing.JLabel();
+        txtGastoRealizadoManual = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Consultar Relatórios");
@@ -76,7 +83,9 @@ public class RelatorioView extends javax.swing.JFrame {
 
         jLabel5.setText("Gasto Previsto:");
 
-        txtGastoRealizado.setText("R$ 0,00");
+        txtGastoRealizadoAula.setFont(new java.awt.Font("Liberation Sans", 0, 12)); // NOI18N
+        txtGastoRealizadoAula.setForeground(new java.awt.Color(60, 60, 60));
+        txtGastoRealizadoAula.setText("R$ 0,00");
 
         txtGastoPrevisto.setText("R$ 0,00");
 
@@ -100,6 +109,28 @@ public class RelatorioView extends javax.swing.JFrame {
 
         txtReceitaPrevista.setText("R$ 0,00");
 
+        jLabel7.setFont(new java.awt.Font("Liberation Sans", 0, 12)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(70, 70, 70));
+        jLabel7.setText("Gasto Aulas:");
+
+        jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 12)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(70, 70, 70));
+        jLabel8.setText("Gasto Manuais:");
+
+        jLabel9.setFont(new java.awt.Font("Liberation Sans", 0, 12)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(70, 70, 70));
+        jLabel9.setText("Gasto Professores:");
+
+        txtGastoRealizado.setText("R$ 0,00");
+
+        txtGastoRealizadoProfessor.setFont(new java.awt.Font("Liberation Sans", 0, 12)); // NOI18N
+        txtGastoRealizadoProfessor.setForeground(new java.awt.Color(60, 60, 60));
+        txtGastoRealizadoProfessor.setText("R$ 0,00");
+
+        txtGastoRealizadoManual.setFont(new java.awt.Font("Liberation Sans", 0, 12)); // NOI18N
+        txtGastoRealizadoManual.setForeground(new java.awt.Color(60, 60, 60));
+        txtGastoRealizadoManual.setText("R$ 0,00");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -111,26 +142,33 @@ public class RelatorioView extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnGerarRelatorioMensal)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnGerarRelatorioAnual)
-                        .addGap(53, 53, 53)
-                        .addComponent(btnVoltar))
                     .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbMes, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
-                        .addGap(68, 68, 68)
+                            .addComponent(btnGerarRelatorioMensal)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel7)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel3))
+                                .addComponent(jLabel9)
+                                .addComponent(jLabel8))
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtReceitaPrevista)
                             .addComponent(txtGastoPrevisto)
+                            .addComponent(txtReceitaPrevista)
+                            .addComponent(txtReceitaArrecadada)
+                            .addComponent(txtGastoRealizadoAula)
                             .addComponent(txtGastoRealizado)
-                            .addComponent(txtReceitaArrecadada))))
+                            .addComponent(txtGastoRealizadoProfessor)
+                            .addComponent(txtGastoRealizadoManual)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnGerarRelatorioAnual)
+                                .addGap(53, 53, 53)
+                                .addComponent(btnVoltar)))))
                 .addGap(40, 40, 40))
         );
         layout.setVerticalGroup(
@@ -149,7 +187,7 @@ public class RelatorioView extends javax.swing.JFrame {
                     .addComponent(btnGerarRelatorioMensal)
                     .addComponent(btnVoltar)
                     .addComponent(btnGerarRelatorioAnual))
-                .addGap(55, 55, 55)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtReceitaArrecadada))
@@ -157,15 +195,27 @@ public class RelatorioView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtReceitaPrevista))
-                .addGap(22, 22, 22)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtGastoRealizado))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtGastoRealizadoAula))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(txtGastoRealizadoProfessor))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtGastoRealizadoManual))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtGastoPrevisto))
-                .addGap(78, 78, 78))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         pack();
@@ -183,7 +233,13 @@ public class RelatorioView extends javax.swing.JFrame {
             
             double receitaArrecadada = 0;
             double receitaFutura = 0;
-            double gastoRealizado = relatorioController.calcularMensalGastoRealizado(mes, ano);
+            
+            Map<String, Double> gasto = relatorioController.detalharMensalGastoRealizado(mes, ano);
+            double gastoRealizado = gasto.get("total");
+            double gastoAulas = gasto.get("aulas");
+            double gastoProfessores = gasto.get("professores");
+            double gastoManuais = gasto.get("manuais");
+            
             double gastoPrevisto = relatorioController.calcularMensalGastoPrevisto(mes, ano);
             
             if(mes > LocalDate.now().getMonthValue()) {
@@ -195,6 +251,9 @@ public class RelatorioView extends javax.swing.JFrame {
             txtReceitaArrecadada.setText(String.format("R$ %.2f", receitaArrecadada));
             txtReceitaPrevista.setText(String.format("R$ %.2f", receitaFutura));
             txtGastoRealizado.setText(String.format("R$ %.2f", gastoRealizado));
+            txtGastoRealizadoAula.setText(String.format("R$ %.2f", gastoAulas));
+            txtGastoRealizadoProfessor.setText(String.format("R$ %.2f", gastoProfessores));
+            txtGastoRealizadoManual.setText(String.format("R$ %.2f", gastoManuais));
             txtGastoPrevisto.setText(String.format("R$ %.2f", gastoPrevisto));  
             
         } catch (NumberFormatException e) {
@@ -216,12 +275,21 @@ public class RelatorioView extends javax.swing.JFrame {
 
             double receitaArrecadada = relatorioController.calcularAnualReceitaArrecadada(ano);
             double receitaPrevista = relatorioController.calcularAnualReceitaPrevista(ano);
-            double gastoRealizado = relatorioController.calcularAnualGastoRealizado(ano);
+            
+            Map<String, Double> gasto = relatorioController.detalharAnualGastoRealizado(ano);
+            double gastoRealizado = gasto.get("total");
+            double gastoAulas = gasto.get("aulas");
+            double gastoProfessores = gasto.get("professores");
+            double gastoManuais = gasto.get("manuais");
+            
             double gastoPrevisto = relatorioController.calcularAnualGastoPrevisto(ano);
 
             txtReceitaArrecadada.setText(String.format("R$ %.2f", receitaArrecadada));
             txtReceitaPrevista.setText(String.format("R$ %.2f", receitaPrevista));
             txtGastoRealizado.setText(String.format("R$ %.2f", gastoRealizado));
+            txtGastoRealizadoAula.setText(String.format("R$ %.2f", gastoAulas));
+            txtGastoRealizadoProfessor.setText(String.format("R$ %.2f", gastoProfessores));
+            txtGastoRealizadoManual.setText(String.format("R$ %.2f", gastoManuais));
             txtGastoPrevisto.setText(String.format("R$ %.2f", gastoPrevisto));  
             
 
@@ -267,8 +335,14 @@ public class RelatorioView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel txtGastoPrevisto;
     private javax.swing.JLabel txtGastoRealizado;
+    private javax.swing.JLabel txtGastoRealizadoAula;
+    private javax.swing.JLabel txtGastoRealizadoManual;
+    private javax.swing.JLabel txtGastoRealizadoProfessor;
     private javax.swing.JLabel txtReceitaArrecadada;
     private javax.swing.JLabel txtReceitaPrevista;
     // End of variables declaration//GEN-END:variables

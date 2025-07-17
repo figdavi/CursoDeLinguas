@@ -6,6 +6,7 @@ package dao;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.Map;
 
 public class RelatorioDAO {
 
@@ -231,6 +232,153 @@ public class RelatorioDAO {
         } catch (SQLException e) {
             System.out.println("Erro ao calcular gasto previsto: " + e.getMessage());
             return 0.0;
+        }
+    }
+    
+    public static Map<String, Double> detalharMensalGastoRealizado(int mes, int ano) {
+        String sqlHorasAulas = """
+            SELECT SUM((julianday(horaFim) - julianday(horaInicio)) * 24)
+            FROM aula
+            WHERE strftime('%m', data) = ?
+              AND strftime('%Y', data) = ?
+              AND date(data) <= date('now')
+        """;
+
+        String sqlGastosProfessores = """
+            SELECT SUM((julianday(horaFim) - julianday(horaInicio)) * 24 * p.valorHora)
+            FROM aula a
+            JOIN professor p ON a.professor_matricula = p.matricula
+            WHERE a.professor_matricula IS NOT NULL
+              AND strftime('%m', a.data) = ?
+              AND strftime('%Y', a.data) = ?
+        """;
+
+        String sqlGastosManuais = """
+            SELECT SUM(valor)
+            FROM gasto
+            WHERE strftime('%m', data) = ?
+              AND strftime('%Y', data) = ?
+        """;
+
+        Map<String, Double> detalhamento = new java.util.HashMap<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmtHorasAulas = conn.prepareStatement(sqlHorasAulas);
+             PreparedStatement pstmtProfessores = conn.prepareStatement(sqlGastosProfessores);
+             PreparedStatement pstmtManuais = conn.prepareStatement(sqlGastosManuais)) {
+
+            String mesStr = String.format("%02d", mes);
+            String anoStr = String.valueOf(ano);
+
+            // Aulas
+            pstmtHorasAulas.setString(1, mesStr);
+            pstmtHorasAulas.setString(2, anoStr);
+            double horasAulas = 0.0;
+            try (ResultSet rs = pstmtHorasAulas.executeQuery()) {
+                if (rs.next()) horasAulas = rs.getDouble(1);
+            }
+            double gastoAulas = horasAulas * model.Aula.getGastoFixoAula();
+            detalhamento.put("aulas", gastoAulas);
+
+            // Professores
+            pstmtProfessores.setString(1, mesStr);
+            pstmtProfessores.setString(2, anoStr);
+            double gastoProfessores = 0.0;
+            try (ResultSet rs = pstmtProfessores.executeQuery()) {
+                if (rs.next()) gastoProfessores = rs.getDouble(1);
+            }
+            detalhamento.put("professores", gastoProfessores);
+
+            // Gastos manuais
+            pstmtManuais.setString(1, mesStr);
+            pstmtManuais.setString(2, anoStr);
+            double gastoManuais = 0.0;
+            try (ResultSet rs = pstmtManuais.executeQuery()) {
+                if (rs.next()) gastoManuais = rs.getDouble(1);
+            }
+            detalhamento.put("manuais", gastoManuais);
+
+            // Total
+            detalhamento.put("total", gastoAulas + gastoProfessores + gastoManuais);
+
+            return detalhamento;
+        } catch (SQLException e) {
+            System.out.println("Erro ao calcular detalhamento mensal: " + e.getMessage());
+            detalhamento.put("aulas", 0.0);
+            detalhamento.put("professores", 0.0);
+            detalhamento.put("manuais", 0.0);
+            detalhamento.put("total", 0.0);
+            return detalhamento;
+        }
+    }
+    
+    public static Map<String, Double> detalharAnualGastoRealizado(int ano) {
+        String sqlHorasAulas = """
+            SELECT SUM((julianday(horaFim) - julianday(horaInicio)) * 24)
+            FROM aula
+            WHERE strftime('%Y', data) = ?
+              AND date(data) <= date('now')
+        """;
+
+        String sqlGastosProfessores = """
+            SELECT SUM((julianday(horaFim) - julianday(horaInicio)) * 24 * p.valorHora)
+            FROM aula a
+            JOIN professor p ON a.professor_matricula = p.matricula
+            WHERE a.professor_matricula IS NOT NULL
+              AND strftime('%Y', a.data) = ?
+        """;
+
+        String sqlGastosManuais = """
+            SELECT SUM(valor)
+            FROM gasto
+            WHERE strftime('%Y', data) = ?
+        """;
+
+        Map<String, Double> detalhamento = new java.util.HashMap<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmtHorasAulas = conn.prepareStatement(sqlHorasAulas);
+             PreparedStatement pstmtProfessores = conn.prepareStatement(sqlGastosProfessores);
+             PreparedStatement pstmtManuais = conn.prepareStatement(sqlGastosManuais)) {
+
+            String anoStr = String.valueOf(ano);
+
+            // Aulas
+            pstmtHorasAulas.setString(1, anoStr);
+            double horasAulas = 0.0;
+            try (ResultSet rs = pstmtHorasAulas.executeQuery()) {
+                if (rs.next()) horasAulas = rs.getDouble(1);
+            }
+            double gastoAulas = horasAulas * model.Aula.getGastoFixoAula();
+            detalhamento.put("aulas", gastoAulas);
+
+            // Professores
+            pstmtProfessores.setString(1, anoStr);
+            double gastoProfessores = 0.0;
+            try (ResultSet rs = pstmtProfessores.executeQuery()) {
+                if (rs.next()) gastoProfessores = rs.getDouble(1);
+            }
+            detalhamento.put("professores", gastoProfessores);
+
+            // Gastos manuais
+            pstmtManuais.setString(1, anoStr);
+            double gastoManuais = 0.0;
+            try (ResultSet rs = pstmtManuais.executeQuery()) {
+                if (rs.next()) gastoManuais = rs.getDouble(1);
+            }
+            detalhamento.put("manuais", gastoManuais);
+
+            // Total
+            detalhamento.put("total", gastoAulas + gastoProfessores + gastoManuais);
+
+            return detalhamento;
+        } catch (SQLException e) {
+            System.out.println("Erro ao calcular detalhamento anual: " + e.getMessage());
+            detalhamento.put("aulas", 0.0);
+            detalhamento.put("professores", 0.0);
+            detalhamento.put("manuais", 0.0);
+            detalhamento.put("total", 0.0);
+            return detalhamento;
         }
     }
 }
