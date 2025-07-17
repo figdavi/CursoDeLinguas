@@ -65,6 +65,7 @@ public class TurmaView extends javax.swing.JFrame {
         comboLingua = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gerenciar Turmas");
 
         lbID.setText("ID:");
 

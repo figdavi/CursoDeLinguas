@@ -14,7 +14,7 @@
 - [x] Garantir que data da aula está entre dataInicio e dataFim da turma
 - [ ] ~~Adicionar um meio do gerente alterar o gastoFixoHoraAula?~~
 	- Necessitaria de salvar o gastoFixoHoraAula com a data no db
-- [ ] setTitle em Views
+- [x] setTitle em Views
 - [ ] ~~Melhorar interface das Views~~
 - [ ] ~~Transformar Usuario em Enum em MenuPrincipalView~~
 - [x] Testar essa parte de matricular aluno na turma, e se ele vai aparecer na tabela da NotaFinalView

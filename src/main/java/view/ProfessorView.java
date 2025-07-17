@@ -64,6 +64,7 @@ public class ProfessorView extends javax.swing.JFrame {
         listLinguas = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gerenciar Professores");
 
         lbNome.setText("Nome:");
 

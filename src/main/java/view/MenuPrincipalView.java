@@ -47,61 +47,62 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu Principal");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Sistema de Gestão de Cursos de Línguas ");
 
-        btnAluno.setText("Aluno");
+        btnAluno.setText("Gerenciar Alunos");
         btnAluno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlunoActionPerformed(evt);
             }
         });
 
-        btnFuncionario.setText("Funcionário");
+        btnFuncionario.setText("Gerenciar Funcionários");
         btnFuncionario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFuncionarioActionPerformed(evt);
             }
         });
 
-        btnAula.setText("Aula");
+        btnAula.setText("Gerenciar Aulas");
         btnAula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAulaActionPerformed(evt);
             }
         });
 
-        btnTurma.setText("Turma");
+        btnTurma.setText("Gerenciar Turmas");
         btnTurma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTurmaActionPerformed(evt);
             }
         });
 
-        btnProfessor.setText("Professor");
+        btnProfessor.setText("Gerenciar Professores");
         btnProfessor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnProfessorActionPerformed(evt);
             }
         });
 
-        btnNotaFinal.setText("Nota Final");
+        btnNotaFinal.setText("Registrar Notas Finais");
         btnNotaFinal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNotaFinalActionPerformed(evt);
             }
         });
 
-        btnGastos.setText("Gastos");
+        btnGastos.setText("Gerenciar Gastos");
         btnGastos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGastosActionPerformed(evt);
             }
         });
 
-        btnRelatorios.setText("Relatórios");
+        btnRelatorios.setText("Consultar Relatórios");
         btnRelatorios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRelatoriosActionPerformed(evt);
@@ -117,7 +118,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
             }
         });
 
-        btnMatricularAluno.setText("Matricular Aluno");
+        btnMatricularAluno.setText("Matricular Alunos");
         btnMatricularAluno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMatricularAlunoActionPerformed(evt);

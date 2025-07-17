@@ -49,6 +49,7 @@ public class RelatorioView extends javax.swing.JFrame {
         btnVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Consultar Relatórios");
         setResizable(false);
 
         jLabel2.setText("Mês:");

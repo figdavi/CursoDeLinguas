@@ -60,6 +60,7 @@ public class GastoView extends javax.swing.JFrame {
         cmbFuncionario = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gerenciar Gastos");
 
         lbNome.setText("Descrição:");
 

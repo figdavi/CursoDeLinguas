@@ -79,6 +79,7 @@ public class AulaView extends javax.swing.JFrame {
         btnAtribuirProfessor = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gerenciar Aulas");
 
         jLabel1.setText("ID:");
 

@@ -49,6 +49,7 @@ public class NotaFinalView extends javax.swing.JFrame {
         btnVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Registrar Notas Finais");
 
         jLabel1.setText("Turma:");
 

@@ -22,7 +22,6 @@ public class MatriculaAlunoView extends javax.swing.JFrame {
     private static final Logger logger = Logger.getLogger(MatriculaAlunoView.class.getName());
 
     public MatriculaAlunoView() {
-        setTitle("Matrícula de Aluno em Turma");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(600, 400);
         setLocationRelativeTo(null);
@@ -53,6 +52,7 @@ public class MatriculaAlunoView extends javax.swing.JFrame {
         cmbAluno = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Matricular Alunos");
 
         btnMatricular.setText("Matricular");
         btnMatricular.addActionListener(new java.awt.event.ActionListener() {

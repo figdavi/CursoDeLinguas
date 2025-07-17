@@ -54,6 +54,7 @@ public class AlunoView extends javax.swing.JFrame {
         btnVoltar2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gerenciar Alunos");
 
         lbNome.setText("Nome:");
         lbNome.setName(""); // NOI18N
