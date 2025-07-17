@@ -318,7 +318,7 @@ public class ProfessorView extends javax.swing.JFrame {
             // Comparar cada elemento da jList com as linguas selecionadas
             for (String lingua : linguasSelecionadas) {
                 for (int i = 0; i < model.getSize(); i++) {
-                    if (model.getElementAt(i).name().equalsIgnoreCase(lingua)) {
+                    if (model.getElementAt(i).toString().equalsIgnoreCase(lingua)) {
                         // Adiciona a posição do elemento i da jList como indice a ser selecionado
                         indices.add(i);
                         break;
@@ -399,7 +399,7 @@ public class ProfessorView extends javax.swing.JFrame {
             dados[i][3] = p.getTelefone();
             dados[i][4] = p.getValorHora();
             // Exibe como "INGLES, ESPANHOL"
-            dados[i][5] = String.join(", ", p.getLinguas().stream().map(Enum::name).toList());
+            dados[i][5] = String.join(", ", p.getLinguas().stream().map(Enum::toString).toList());
         }
 
         tabelaProfessores.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
