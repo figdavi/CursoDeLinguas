@@ -403,7 +403,7 @@ public class AulaView extends javax.swing.JFrame {
         int linha = tabelaAulas.getSelectedRow();
         if (linha != -1) {
             int id = (int) tabelaAulas.getValueAt(linha, 0);
-            int confirm = JOptionPane.showConfirmDialog(this, "Deseja excluir o aluno selecionado?",
+            int confirm = JOptionPane.showConfirmDialog(this, "Deseja excluir a aula selecionada?",
                     "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 String resultado = aulaController.excluirAula(id);
