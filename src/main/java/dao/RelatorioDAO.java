@@ -125,29 +125,13 @@ public class RelatorioDAO {
     
     
     public static double calcularAnualValorArrecadado(int ano) {
-        LocalDate primeiroDia = LocalDate.of(ano, 1, 1);
-        LocalDate ultimoDia = LocalDate.of(ano, 12, 31);
+        double resultado = 0;
         
-        String sql = """
-            SELECT SUM(t.preco * (
-                SELECT COUNT(*) FROM turma_aluno ta WHERE ta.turma_id = t.id
-            ))
-            FROM turma t
-            WHERE t.dataInicio <= ?
-              AND t.dataFim >= ?
-        """;
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, ultimoDia.toString());
-            pstmt.setString(2, primeiroDia.toString());  
-            ResultSet rs = pstmt.executeQuery();
-            return rs.next() ? rs.getDouble(1) : 0.0;
-        } catch (SQLException e) {
-            System.out.println("Erro ao calcular valor arrecadado: " + e.getMessage());
-            return 0.0;
+        for(int i = 1; i < 13; i++) {
+            resultado += calcularMensalValorArrecadado(i, ano);
         }
+        
+        return resultado;
     }
 
     public static double calcularAnualGastoRealizado(int ano) {
