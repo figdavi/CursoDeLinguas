@@ -363,7 +363,12 @@ public class FuncionarioView extends javax.swing.JFrame {
             dados[i][5] = f.getCargo().toString();
         }
 
-        tabelaFuncionarios.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
+        tabelaFuncionarios.setModel(new javax.swing.table.DefaultTableModel(dados, colunas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
     }
 
     private void limparCampos() {

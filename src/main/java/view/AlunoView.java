@@ -339,7 +339,12 @@ public class AlunoView extends javax.swing.JFrame {
             dados[i][4] = a.getEmail();
         }
 
-        tabelaAlunos.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
+        tabelaAlunos.setModel(new javax.swing.table.DefaultTableModel(dados, colunas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
     }
     
     private void limparCampos() {

@@ -621,7 +621,12 @@ public class AulaView extends javax.swing.JFrame {
             dados[i][5] = a.getProfessor();
         }
 
-        tabelaAulas.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
+        tabelaAulas.setModel(new javax.swing.table.DefaultTableModel(dados, colunas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
         limparCampos();
     }
     

@@ -237,7 +237,12 @@ public class MatriculaAlunoView extends javax.swing.JFrame {
             dados[i][1] = a.getNome();
             dados[i][2] = a.getTelefone();
         }
-        tabelaMatriculados.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
+        tabelaMatriculados.setModel(new javax.swing.table.DefaultTableModel(dados, colunas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
     }
 
     private void carregarAlunos() {

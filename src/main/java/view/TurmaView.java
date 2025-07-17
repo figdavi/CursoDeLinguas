@@ -410,7 +410,12 @@ public class TurmaView extends javax.swing.JFrame {
             dados[i][4] = t.getDataInicio().format(formatter);
             dados[i][5] = t.getDataFim().format(formatter);
         }
-        tabelaTurmas.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
+        tabelaTurmas.setModel(new javax.swing.table.DefaultTableModel(dados, colunas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
     }
     
     private void limparCampos() {

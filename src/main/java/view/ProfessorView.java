@@ -402,7 +402,12 @@ public class ProfessorView extends javax.swing.JFrame {
             dados[i][5] = String.join(", ", p.getLinguas().stream().map(Enum::toString).toList());
         }
 
-        tabelaProfessores.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
+        tabelaProfessores.setModel(new javax.swing.table.DefaultTableModel(dados, colunas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
     }
 
     private void limparCampos() {

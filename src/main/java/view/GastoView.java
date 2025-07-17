@@ -366,7 +366,13 @@ public class GastoView extends javax.swing.JFrame {
             dados[i][3] = g.getData().format(formatter);
         }
 
-        tabelaGastos.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
+
+        tabelaGastos.setModel(new javax.swing.table.DefaultTableModel(dados, colunas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
     }
     
     private void carregarFuncionarios() {
