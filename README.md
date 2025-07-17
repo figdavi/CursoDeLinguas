@@ -10,7 +10,7 @@
 	- [x] Notas
 - [x] Adicionar métodos .toString() aos modelos necessários
 - [x] AulaView não retorna valores para cmbBox ao clicar na tabela
-- [ ] Adicionar Relatorio Anual
+- [x] Adicionar Relatorio Anual
 - [x] Garantir que data da aula está entre dataInicio e dataFim da turma
 - [ ] ~~Adicionar um meio do gerente alterar o gastoFixoHoraAula?~~
 	- Necessitaria de salvar o gastoFixoHoraAula com a data no db
