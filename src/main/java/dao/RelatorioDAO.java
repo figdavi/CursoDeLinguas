@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 public class RelatorioDAO {
 
-    public static double calcularMensalValorArrecadado(int mes, int ano) {
+    public static double calcularMensalReceitaArrecadada(int mes, int ano) {
         // Calcula o primeiro e último dia do mês selecionado
         LocalDate primeiroDia = LocalDate.of(ano, mes, 1);
         LocalDate ultimoDia = primeiroDia.withDayOfMonth(primeiroDia.lengthOfMonth());
@@ -124,11 +124,35 @@ public class RelatorioDAO {
     }
     
     
-    public static double calcularAnualValorArrecadado(int ano) {
+    public static double calcularAnualReceitaArrecadada(int ano) {
         double resultado = 0;
-        
-        for(int i = 1; i < 13; i++) {
-            resultado += calcularMensalValorArrecadado(i, ano);
+        LocalDate hoje = LocalDate.now();
+        if(ano == hoje.getYear()) {
+            int mesAtual = hoje.getMonthValue();
+            for(int i = 1; i <= mesAtual; i++) {
+                resultado += calcularMensalReceitaArrecadada(i, ano);
+            }
+        } else if (ano < hoje.getYear()) {
+            for(int i = 1; i < 13; i++) {
+                resultado += calcularMensalReceitaArrecadada(i, ano);
+            }
+        }
+
+        return resultado;
+    }
+    
+    public static double calcularAnualReceitaPrevista(int ano) {
+        double resultado = 0;
+        LocalDate hoje = LocalDate.now();
+        if(ano == hoje.getYear()) {
+            int mesAtual = hoje.getMonthValue();
+            for(int i = (mesAtual+1); i < 13 ; i++) {
+                resultado += calcularMensalReceitaArrecadada(i, ano);
+            }
+        } else if (ano > hoje.getYear()) {
+            for(int i = 1; i < 13; i++) {
+                resultado += calcularMensalReceitaArrecadada(i, ano);
+            }
         }
         
         return resultado;
