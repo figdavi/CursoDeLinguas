@@ -108,6 +108,8 @@ public class MenuPrincipalView extends javax.swing.JFrame {
             }
         });
 
+        btnSair.setBackground(new java.awt.Color(220, 0, 0));
+        btnSair.setForeground(new java.awt.Color(255, 255, 255));
         btnSair.setText("Sair");
         btnSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
