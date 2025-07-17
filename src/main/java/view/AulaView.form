@@ -129,7 +129,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Data:"/>
+        <Property name="text" type="java.lang.String" value="Data (dd/MM/yyyy):"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtData">
@@ -156,12 +156,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Hora Fim:"/>
+        <Property name="text" type="java.lang.String" value="Hora Fim (HH:mm):"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Hora In&#xed;cio:"/>
+        <Property name="text" type="java.lang.String" value="Hora In&#xed;cio (HH:mm):"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtHoraInicio">

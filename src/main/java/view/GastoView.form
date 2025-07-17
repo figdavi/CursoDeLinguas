@@ -117,7 +117,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lbTelefone">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Data:"/>
+        <Property name="text" type="java.lang.String" value="Data (dd/MM/yyyy):"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lbMatricula">

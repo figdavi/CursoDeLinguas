@@ -114,12 +114,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lbDataInicio">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Data In&#xed;cio:"/>
+        <Property name="text" type="java.lang.String" value="Data In&#xed;cio (dd/MM/yyyy):"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lbDataFim">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Data Fim:"/>
+        <Property name="text" type="java.lang.String" value="Data Fim (dd/MM/yyyy):"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lbLingua">
@@ -134,7 +134,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lbPreco">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Pre&#xe7;o:"/>
+        <Property name="text" type="java.lang.String" value="Pre&#xe7;o (R$):"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtPreco">

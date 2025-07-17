@@ -82,15 +82,15 @@ public class AulaView extends javax.swing.JFrame {
 
         jLabel1.setText("ID:");
 
-        jLabel2.setText("Data:");
+        jLabel2.setText("Data (dd/MM/yyyy):");
 
         cmbTurma.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel3.setText("Turma:");
 
-        jLabel4.setText("Hora Fim:");
+        jLabel4.setText("Hora Fim (HH:mm):");
 
-        jLabel5.setText("Hora Início:");
+        jLabel5.setText("Hora Início (HH:mm):");
 
         txtHoraFim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

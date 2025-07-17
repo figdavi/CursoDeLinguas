@@ -68,15 +68,15 @@ public class TurmaView extends javax.swing.JFrame {
 
         lbID.setText("ID:");
 
-        lbDataInicio.setText("Data Início:");
+        lbDataInicio.setText("Data Início (dd/MM/yyyy):");
 
-        lbDataFim.setText("Data Fim:");
+        lbDataFim.setText("Data Fim (dd/MM/yyyy):");
 
         lbLingua.setText("Língua:");
 
         lbNivel.setText("Nível:");
 
-        lbPreco.setText("Preço:");
+        lbPreco.setText("Preço (R$):");
 
         txtDataFim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

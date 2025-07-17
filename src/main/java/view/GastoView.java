@@ -65,7 +65,7 @@ public class GastoView extends javax.swing.JFrame {
 
         lbEndereco.setText("Valor:");
 
-        lbTelefone.setText("Data:");
+        lbTelefone.setText("Data (dd/MM/yyyy):");
 
         lbMatricula.setText("ID:");
 
