@@ -47,6 +47,7 @@ public class RelatorioView extends javax.swing.JFrame {
         txtGastoPrevisto = new javax.swing.JLabel();
         txtValorArrecadado = new javax.swing.JLabel();
         btnVoltar = new javax.swing.JButton();
+        btnGerarRelatorioAnual = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Consultar Relatórios");
@@ -60,7 +61,7 @@ public class RelatorioView extends javax.swing.JFrame {
 
         cmbAno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        btnGerarRelatorio.setText("Gerar Relatório");
+        btnGerarRelatorio.setText("Gerar Relatório Mensal");
         btnGerarRelatorio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGerarRelatorioActionPerformed(evt);
@@ -86,38 +87,44 @@ public class RelatorioView extends javax.swing.JFrame {
             }
         });
 
+        btnGerarRelatorioAnual.setText("Gerar Relatório Anual");
+        btnGerarRelatorioAnual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGerarRelatorioAnualActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cmbMes, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel5))
-                                .addGap(69, 69, 69)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtGastoPrevisto)
-                                    .addComponent(txtGastoRealizado)
-                                    .addComponent(txtValorArrecadado)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(91, 91, 91)
-                                .addComponent(btnGerarRelatorio)
-                                .addGap(52, 52, 52)
-                                .addComponent(btnVoltar))
-                            .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(40, Short.MAX_VALUE))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5))
+                        .addGap(69, 69, 69)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtGastoPrevisto)
+                            .addComponent(txtGastoRealizado)
+                            .addComponent(txtValorArrecadado)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(btnGerarRelatorioAnual)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnGerarRelatorio)
+                        .addGap(46, 46, 46)
+                        .addComponent(btnVoltar))
+                    .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbMes, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,7 +140,8 @@ public class RelatorioView extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGerarRelatorio)
-                    .addComponent(btnVoltar))
+                    .addComponent(btnVoltar)
+                    .addComponent(btnGerarRelatorioAnual))
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -162,9 +170,9 @@ public class RelatorioView extends javax.swing.JFrame {
             int mes = Integer.parseInt(mesStr.substring(0, 2));
             int ano = Integer.parseInt((String) cmbAno.getSelectedItem());
 
-            double valorArrecadado = relatorioController.calcularValorArrecadado(mes, ano);
-            double gastoRealizado = relatorioController.calcularGastoRealizado(mes, ano);
-            double gastoPrevisto = relatorioController.calcularGastoPrevisto(mes, ano);
+            double valorArrecadado = relatorioController.calcularMensalValorArrecadado(mes, ano);
+            double gastoRealizado = relatorioController.calcularMensalGastoRealizado(mes, ano);
+            double gastoPrevisto = relatorioController.calcularMensalGastoPrevisto(mes, ano);
 
             txtValorArrecadado.setText(String.format("R$ %.2f", valorArrecadado));
             txtGastoRealizado.setText(String.format("R$ %.2f", gastoRealizado));
@@ -179,6 +187,28 @@ public class RelatorioView extends javax.swing.JFrame {
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose(); // Fecha a janela atual
     }//GEN-LAST:event_btnVoltarActionPerformed
+
+    private void btnGerarRelatorioAnualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarRelatorioAnualActionPerformed
+        try {
+            if (cmbAno.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Selecione o ano para o relatório.");
+                return;
+            }
+            int ano = Integer.parseInt((String) cmbAno.getSelectedItem());
+
+            double valorArrecadado = relatorioController.calcularAnualValorArrecadado(ano);
+            double gastoRealizado = relatorioController.calcularAnualGastoRealizado(ano);
+            double gastoPrevisto = relatorioController.calcularAnualGastoPrevisto(ano);
+
+            txtValorArrecadado.setText(String.format("R$ %.2f", valorArrecadado));
+            txtGastoRealizado.setText(String.format("R$ %.2f", gastoRealizado));
+            txtGastoPrevisto.setText(String.format("R$ %.2f", gastoPrevisto));  
+            
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Valor hora médio inválido!");
+        }   
+    }//GEN-LAST:event_btnGerarRelatorioAnualActionPerformed
 
     /**
      * @param args the command line arguments
@@ -207,6 +237,7 @@ public class RelatorioView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGerarRelatorio;
+    private javax.swing.JButton btnGerarRelatorioAnual;
     private javax.swing.JButton btnVoltar;
     private javax.swing.JComboBox<String> cmbAno;
     private javax.swing.JComboBox<String> cmbMes;

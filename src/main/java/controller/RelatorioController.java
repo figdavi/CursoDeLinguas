@@ -8,15 +8,27 @@ import dao.RelatorioDAO;
 
 public class RelatorioController {
 
-    public double calcularValorArrecadado(int mes, int ano) {
-        return RelatorioDAO.calcularValorArrecadado(mes, ano);
+    public double calcularMensalValorArrecadado(int mes, int ano) {
+        return RelatorioDAO.calcularMensalValorArrecadado(mes, ano);
     }
 
-    public double calcularGastoRealizado(int mes, int ano) {
-        return RelatorioDAO.calcularGastoRealizado(mes, ano);
+    public double calcularMensalGastoRealizado(int mes, int ano) {
+        return RelatorioDAO.calcularMensalGastoRealizado(mes, ano);
     }
 
-    public double calcularGastoPrevisto(int mes, int ano) {
-        return RelatorioDAO.calcularGastoPrevisto(mes, ano);
+    public double calcularMensalGastoPrevisto(int mes, int ano) {
+        return RelatorioDAO.calcularMensalGastoPrevisto(mes, ano);
+    }
+    
+    public double calcularAnualValorArrecadado(int ano) {
+        return RelatorioDAO.calcularAnualValorArrecadado(ano);
+    }
+
+    public double calcularAnualGastoRealizado(int ano) {
+        return RelatorioDAO.calcularAnualGastoRealizado(ano);
+    }
+
+    public double calcularAnualGastoPrevisto(int ano) {
+        return RelatorioDAO.calcularAnualGastoPrevisto(ano);
     }
 }
