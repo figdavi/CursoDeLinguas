@@ -9,21 +9,25 @@ import java.sql.*;
 public class RelatorioDAO {
 
     public static double calcularValorArrecadado(int mes, int ano) {
+        // Calcula o primeiro e último dia do mês selecionado
+        java.time.LocalDate primeiroDia = java.time.LocalDate.of(ano, mes, 1);
+        java.time.LocalDate ultimoDia = primeiroDia.withDayOfMonth(primeiroDia.lengthOfMonth());
+
         String sql = """
             SELECT SUM(t.preco * (
                 SELECT COUNT(*) FROM turma_aluno ta WHERE ta.turma_id = t.id
             ))
-                FROM turma t
-                WHERE strftime('%m', t.dataInicio) = ?
-                  AND strftime('%Y', t.dataInicio) = ?        
+            FROM turma t
+            WHERE t.dataInicio <= ?
+              AND t.dataFim >= ?
         """;
-        
-        
+
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, String.format("%02d", mes));
-            pstmt.setString(2, String.valueOf(ano));
+            pstmt.setString(1, ultimoDia.toString());     // t.dataInicio <= último dia do mês
+            pstmt.setString(2, primeiroDia.toString());  // t.dataFim >= primeiro dia do mês
+
             ResultSet rs = pstmt.executeQuery();
             return rs.next() ? rs.getDouble(1) : 0.0;
         } catch (SQLException e) {
@@ -38,6 +42,7 @@ public class RelatorioDAO {
             FROM aula
             WHERE strftime('%m', data) = ? 
               AND strftime('%Y', data) = ?
+              AND date(data) <= date('now')
         """;
 
         String sqlGastosProfessores = """
@@ -101,6 +106,7 @@ public class RelatorioDAO {
             WHERE professor_matricula IS NULL
               AND strftime('%m', data) = ?
               AND strftime('%Y', data) = ?
+              AND date(data) > date('now')
         """;
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

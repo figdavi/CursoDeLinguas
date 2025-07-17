@@ -6,6 +6,9 @@ package view;
 
 import java.util.logging.Logger;
 import controller.GastoController;
+import controller.FuncionarioController;
+import java.awt.HeadlessException;
+import model.Funcionario;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -17,6 +20,7 @@ import javax.swing.JOptionPane;
  */
 public class GastoView extends javax.swing.JFrame {
     private final GastoController gastoController = new GastoController();
+    private final FuncionarioController funcionarioController = new FuncionarioController();
     private static final Logger logger = Logger.getLogger(GastoView.class.getName());
 
     /**
@@ -25,6 +29,7 @@ public class GastoView extends javax.swing.JFrame {
     public GastoView() {
         initComponents();
         atualizarTabela();
+        carregarFuncionarios();
         txtID.setEditable(true);
     }
 
@@ -52,6 +57,7 @@ public class GastoView extends javax.swing.JFrame {
         scrollGastos = new javax.swing.JScrollPane();
         tabelaGastos = new javax.swing.JTable();
         btnVoltar1 = new javax.swing.JButton();
+        cmbFuncionario = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -116,6 +122,13 @@ public class GastoView extends javax.swing.JFrame {
             }
         });
 
+        cmbFuncionario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFuncionario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbFuncionarioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -123,15 +136,18 @@ public class GastoView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(52, 52, 52)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(lbMatricula)
-                        .addComponent(lbEndereco)
-                        .addComponent(lbNome)
-                        .addComponent(lbTelefone)
-                        .addComponent(txtID, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                        .addComponent(txtDescricao)
-                        .addComponent(txtValor)
-                        .addComponent(txtData))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbMatricula)
+                            .addComponent(lbEndereco)
+                            .addComponent(lbNome)
+                            .addComponent(lbTelefone)
+                            .addComponent(txtID, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                            .addComponent(txtDescricao)
+                            .addComponent(txtValor)
+                            .addComponent(txtData))
+                        .addGap(35, 35, 35)
+                        .addComponent(cmbFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(btnCadastrar)
@@ -152,7 +168,9 @@ public class GastoView extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addComponent(lbMatricula)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbNome)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -224,36 +242,70 @@ public class GastoView extends javax.swing.JFrame {
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         try {
             int id = Integer.parseInt(txtID.getText().trim());
-            String descricao = txtDescricao.getText().trim();
-            double valor = Double.parseDouble(txtValor.getText().trim());
             LocalDate data = LocalDate.parse(txtData.getText().trim(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-            String msg = gastoController.inserirGasto(id, descricao, valor, data);
-            JOptionPane.showMessageDialog(this, msg);
-            if (msg.contains("sucesso")) {
-                atualizarTabela();
-                limparCampos();
+            Object obj = cmbFuncionario.getSelectedItem();
+
+            // Se for pagamento de funcionário (combo preenchido com Funcionario)
+            if (obj instanceof Funcionario funcionario) {
+                String msg = gastoController.inserirPagamentoFuncionario(id, funcionario, data);
+                JOptionPane.showMessageDialog(this, msg);
+                if (msg.contains("sucesso")) {
+                    atualizarTabela();
+                    limparCampos();
+                }
+            } else {
+                // Gasto manual
+                String descricao = txtDescricao.getText().trim();
+                double valor = Double.parseDouble(txtValor.getText().trim());
+
+                String msg = gastoController.inserirGasto(id, descricao, valor, data);
+                JOptionPane.showMessageDialog(this, msg);
+                if (msg.contains("sucesso")) {
+                    atualizarTabela();
+                    limparCampos();
+                }
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "ID ou valor inválido.");
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar gasto: " + e.getMessage());
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void tabelaGastosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaGastosMouseClicked
         int linha = tabelaGastos.getSelectedRow();
         if (linha != -1) {
+            String descricao = tabelaGastos.getValueAt(linha, 1).toString();
             txtID.setText(tabelaGastos.getValueAt(linha, 0).toString());
-            txtDescricao.setText(tabelaGastos.getValueAt(linha, 1).toString());
+            txtDescricao.setText(descricao);
             txtValor.setText(tabelaGastos.getValueAt(linha, 2).toString());
             txtData.setText(tabelaGastos.getValueAt(linha, 3).toString());
-            
             txtID.setEditable(false);
+
+            // Bloqueia campos se for pagamento de funcionário
+            boolean isPagamentoFuncionario = descricao.startsWith("Pagamento salário");
+            txtDescricao.setEditable(!isPagamentoFuncionario);
+            txtValor.setEditable(!isPagamentoFuncionario);
+
+            cmbFuncionario.setEnabled(!isPagamentoFuncionario);
         }
     }//GEN-LAST:event_tabelaGastosMouseClicked
 
     private void btnVoltar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltar1ActionPerformed
         dispose(); // Fecha a janela atual
     }//GEN-LAST:event_btnVoltar1ActionPerformed
+
+    private void cmbFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFuncionarioActionPerformed
+        Object obj = cmbFuncionario.getSelectedItem();
+        if (obj instanceof Funcionario funcionario) {
+            txtDescricao.setText("Pagamento salário " + funcionario.toString());
+            txtValor.setText(String.valueOf(funcionario.getSalario()));
+        } else {
+            txtDescricao.setText("");
+            txtValor.setText("");
+        }
+    }//GEN-LAST:event_cmbFuncionarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -286,6 +338,7 @@ public class GastoView extends javax.swing.JFrame {
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnVoltar1;
+    private javax.swing.JComboBox cmbFuncionario;
     private javax.swing.JLabel lbEndereco;
     private javax.swing.JLabel lbMatricula;
     private javax.swing.JLabel lbNome;
@@ -315,6 +368,15 @@ public class GastoView extends javax.swing.JFrame {
 
         tabelaGastos.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
     }
+    
+    private void carregarFuncionarios() {
+        List<Funcionario> funcionarios = funcionarioController.listarTodosFuncionarios();
+        cmbFuncionario.removeAllItems();
+        cmbFuncionario.addItem("Selecione o Funcionário");
+        for (Funcionario f : funcionarios) {
+            cmbFuncionario.addItem(f);
+        }
+    }
 
     private void limparCampos() {
         txtID.setText("");
@@ -322,5 +384,9 @@ public class GastoView extends javax.swing.JFrame {
         txtValor.setText("");
         txtData.setText("");
         txtID.setEditable(true);
+        txtDescricao.setEditable(true);
+        txtValor.setEditable(true);
+        cmbFuncionario.setEnabled(true);
+        cmbFuncionario.setSelectedIndex(0);
     }
 }

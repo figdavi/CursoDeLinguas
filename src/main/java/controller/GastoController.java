@@ -5,6 +5,7 @@
 package controller;
 
 import model.Gasto;
+import model.Funcionario;
 import dao.GastoDAO;
 import java.time.LocalDate;
 import java.util.List;
@@ -32,6 +33,22 @@ public class GastoController {
         Gasto gasto = new Gasto(id, descricao, valor, data);
         boolean sucesso = gastoDAO.inserir(gasto);
         return sucesso ? "Gasto cadastrado com sucesso!" : "Erro ao cadastrar gasto.";
+    }
+
+    public String inserirPagamentoFuncionario(int id, Funcionario funcionario, LocalDate data) {
+        if (id <= 0) return "ID deve ser positivo.";
+        if (funcionario == null) return "Funcionário obrigatório.";
+        if (data == null) return "Data obrigatória.";
+
+        // Checa duplicidade de pagamento no mês/ano
+        int mes = data.getMonthValue();
+        int ano = data.getYear();
+        if (gastoDAO.existePagamentoFuncionarioNoMes(funcionario.getId(), mes, ano)) {
+            return "Já existe pagamento deste funcionário para o mês/ano.";
+        }
+
+        boolean sucesso = gastoDAO.inserirPagamentoFuncionario(id, funcionario, data);
+        return sucesso ? "Pagamento de salário registrado com sucesso!" : "Erro ao registrar pagamento de salário.";
     }
 
     public String atualizarGasto(int id, String descricao, double valor, LocalDate data) {

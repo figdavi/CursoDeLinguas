@@ -17,7 +17,6 @@ public class AulaDAO {
     private ProfessorDAO professorDAO = new ProfessorDAO();
     private TurmaDAO turmaDAO = new TurmaDAO();
 
-    // INSERIR
     public boolean inserir(Aula aula) {
         String sql = "INSERT INTO aula (id, turma_id, data, horaInicio, horaFim, professor_matricula) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -93,7 +92,6 @@ public class AulaDAO {
         }
     }
 
-    // EXCLUIR
     public boolean excluir(int aulaId) {
         String sql = "DELETE FROM aula WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -106,7 +104,6 @@ public class AulaDAO {
         }
     }
 
-    // BUSCAR POR ID
     public Aula buscarPorId(int id) {
         String sql = "SELECT * FROM aula WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -132,7 +129,6 @@ public class AulaDAO {
         return null;
     }
 
-    // LISTAR TODOS
     public List<Aula> listarTodos() {
         List<Aula> aulas = new ArrayList<>();
         String sql = "SELECT * FROM aula";
@@ -158,4 +154,31 @@ public class AulaDAO {
         }
         return aulas;
     }
+    
+    public List<Aula> listarAulasDoProfessorNoDia(int professorMatricula, LocalDate data) {
+        List<Aula> aulas = new ArrayList<>();
+        String sql = "SELECT * FROM aula WHERE professor_matricula = ? AND data = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, professorMatricula);
+            pstmt.setString(2, data.toString());
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Aula a = new Aula(
+                    rs.getInt("id"),
+                    // ajuste os campos conforme seu construtor
+                    null, // turma
+                    LocalDate.parse(rs.getString("data")),
+                    LocalTime.parse(rs.getString("horaInicio")),
+                    LocalTime.parse(rs.getString("horaFim")),
+                    null // professor (ou carregue, se necessário)
+                );
+                aulas.add(a);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar aulas do professor: " + e.getMessage());
+        }
+        return aulas;
+    }
+
 }

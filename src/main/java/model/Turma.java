@@ -71,4 +71,17 @@ public class Turma {
     public String toString() {
         return id + " - " + lingua + " (" + nivel + ")";
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Turma)) return false;
+        Turma other = (Turma) obj;
+        return this.id == other.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
 }

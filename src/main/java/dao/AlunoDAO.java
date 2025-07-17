@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AlunoDAO {
+    
     public boolean inserir(Aluno aluno) {
         String sql = "INSERT INTO aluno (matricula, nome, endereco, telefone, email) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();

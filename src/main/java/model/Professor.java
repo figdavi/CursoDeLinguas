@@ -57,4 +57,18 @@ public class Professor {
     public String toString() {
         return matricula + " - " + nome;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Professor other = (Professor) obj;
+        return this.matricula == other.matricula;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(matricula);
+    }
+
 }

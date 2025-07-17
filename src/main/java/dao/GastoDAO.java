@@ -5,6 +5,7 @@
 package dao;
 
 import model.Gasto;
+import model.Funcionario;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,6 +29,29 @@ public class GastoDAO {
 
         } catch (SQLException e) {
             System.out.println("Erro ao inserir gasto: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean inserirPagamentoFuncionario(int id, Funcionario funcionario, LocalDate data) {
+        String descricao = "Pagamento salário - " + funcionario.toString();
+        double salario = funcionario.getSalario();
+        Gasto g = new Gasto(id, descricao, salario, data);
+        return inserir(g);
+    }
+
+    public boolean existePagamentoFuncionarioNoMes(int funcionarioId, int mes, int ano) {
+        String sql = "SELECT COUNT(*) FROM gasto WHERE descricao LIKE ? AND strftime('%m', data) = ? AND strftime('%Y', data) = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, "Pagamento salário - " + funcionarioId + "%");
+            pstmt.setString(2, String.format("%02d", mes));
+            pstmt.setString(3, String.valueOf(ano));
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
+        } catch (SQLException e) {
+            System.out.println("Erro ao verificar pagamento de funcionário: " + e.getMessage());
             return false;
         }
     }

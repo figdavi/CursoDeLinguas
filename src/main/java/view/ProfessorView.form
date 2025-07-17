@@ -24,7 +24,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -36,31 +36,29 @@
                               <Component id="btnExcluir" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnLimpar" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
                               <Component id="btnVoltar" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="lbMatricula" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbEndereco" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbLinguas" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbNome" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbValorHora" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbTelefone" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtNome" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtEndereco" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtTelefone" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtMatricula" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jScrollPane3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtValorHora" alignment="0" min="-2" pref="368" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="lbMatricula" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbEndereco" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbLinguas" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbNome" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbValorHora" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbTelefone" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtNome" alignment="0" min="-2" pref="368" max="-2" attributes="0"/>
+                          <Component id="txtEndereco" alignment="0" min="-2" pref="368" max="-2" attributes="0"/>
+                          <Component id="txtTelefone" alignment="0" min="-2" pref="368" max="-2" attributes="0"/>
+                          <Component id="txtMatricula" alignment="0" min="-2" pref="368" max="-2" attributes="0"/>
+                          <Component id="jScrollPane3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtValorHora" alignment="0" min="-2" pref="368" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" min="-2" pref="563" max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" pref="705" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="206" max="32767" attributes="0"/>
+              <EmptySpace pref="64" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

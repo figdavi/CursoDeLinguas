@@ -239,7 +239,13 @@ public class TurmaView extends javax.swing.JFrame {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate inicio = LocalDate.parse(txtDataInicio.getText().trim(), formatter);
             LocalDate fim = LocalDate.parse(txtDataFim.getText().trim(), formatter);
-
+            
+            // Validação: data de início deve ser antes da data de fim
+            if (!inicio.isBefore(fim)) {
+                JOptionPane.showMessageDialog(this, "A data de início deve ser menor que a data de fim.");
+                return;
+            }
+            
             String msg = turmaController.inserirTurma(id, inicio, fim, lingua, nivel, preco);
             JOptionPane.showMessageDialog(this, msg);
             if (msg.contains("sucesso")) {
@@ -262,6 +268,12 @@ public class TurmaView extends javax.swing.JFrame {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate inicio = LocalDate.parse(txtDataInicio.getText().trim(), formatter);
             LocalDate fim = LocalDate.parse(txtDataFim.getText().trim(), formatter);
+            
+            // Validação: data de início deve ser antes da data de fim
+            if (!inicio.isBefore(fim)) {
+                JOptionPane.showMessageDialog(this, "A data de início deve ser menor que a data de fim.");
+                return;
+            }
 
             String msg = turmaController.atualizarTurma(id, inicio, fim, lingua, nivel, preco);
             JOptionPane.showMessageDialog(this, msg);

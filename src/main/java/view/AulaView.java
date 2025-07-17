@@ -17,6 +17,7 @@ import model.Professor;
 import model.Turma;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Objects;
 
 /**
  *
@@ -34,9 +35,16 @@ public class AulaView extends javax.swing.JFrame {
      */
     public AulaView() {
         initComponents();
-        carregarProfessores();
         carregarTurmas();
         atualizarTabela();
+        cmbProfessor.setEnabled(false);
+        btnAtribuirProfessor.setEnabled(false);
+
+        // Ao mudar a turma, atualize professores disponíveis!
+        cmbTurma.addActionListener(e -> {
+            Turma turma = (Turma) cmbTurma.getSelectedItem();
+            carregarProfessoresParaTurma(turma);
+        });
     }
 
     /**
@@ -66,7 +74,7 @@ public class AulaView extends javax.swing.JFrame {
         btnAtualizar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnLimpar = new javax.swing.JButton();
-        btnVoltar1 = new javax.swing.JButton();
+        btnVoltar = new javax.swing.JButton();
         btnAdiarAula = new javax.swing.JButton();
         btnAtribuirProfessor = new javax.swing.JButton();
 
@@ -140,10 +148,10 @@ public class AulaView extends javax.swing.JFrame {
             }
         });
 
-        btnVoltar1.setText("Voltar");
-        btnVoltar1.addActionListener(new java.awt.event.ActionListener() {
+        btnVoltar.setText("Voltar");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVoltar1ActionPerformed(evt);
+                btnVoltarActionPerformed(evt);
             }
         });
 
@@ -199,7 +207,7 @@ public class AulaView extends javax.swing.JFrame {
                             .addGap(18, 18, 18)
                             .addComponent(btnLimpar)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnVoltar1))
+                            .addComponent(btnVoltar))
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 620, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
@@ -240,7 +248,7 @@ public class AulaView extends javax.swing.JFrame {
                     .addComponent(btnExcluir)
                     .addComponent(btnLimpar)
                     .addComponent(btnAtualizar)
-                    .addComponent(btnVoltar1))
+                    .addComponent(btnVoltar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
@@ -260,35 +268,33 @@ public class AulaView extends javax.swing.JFrame {
             txtData.setText(tabelaAulas.getValueAt(linha, 1).toString());
             txtHoraInicio.setText(tabelaAulas.getValueAt(linha, 2).toString());
             txtHoraFim.setText(tabelaAulas.getValueAt(linha, 3).toString());
-            
-        // Seleciona corretamente a Turma no ComboBox
-        String turmaStr = tabelaAulas.getValueAt(linha, 4).toString();
+
+            Object turmaObj = tabelaAulas.getValueAt(linha, 4);
             for (int i = 0; i < cmbTurma.getItemCount(); i++) {
-                Turma c = (Turma) cmbTurma.getItemAt(i);
-                if (c.toString().equals(turmaStr)) {
+                Turma t = (Turma) cmbTurma.getItemAt(i);
+                if (Objects.equals(t, turmaObj)) {
                     cmbTurma.setSelectedIndex(i);
+                    carregarProfessoresParaTurma(t); // Atualiza professores aptos!
                     break;
                 }
             }
-        
-        // Seleciona corretamente o Professor no ComboBox
-        Professor prof = (Professor) tabelaAulas.getValueAt(linha, 5);
-        boolean encontrou = false;
-        for (int i = 0; i < cmbProfessor.getItemCount(); i++) {
-            Professor p = (Professor) cmbProfessor.getItemAt(i);
-            if (prof == null && p == null) {
-                cmbProfessor.setSelectedIndex(i);
-                encontrou = true;
-                break;
-            } else if (p != null && prof != null && p.getMatricula() == prof.getMatricula()) {
-                cmbProfessor.setSelectedIndex(i);
-                encontrou = true;
-                break;
+
+            Object professorObj = tabelaAulas.getValueAt(linha, 5);
+            boolean encontrou = false;
+            for (int i = 0; i < cmbProfessor.getItemCount(); i++) {
+                Professor p = (Professor) cmbProfessor.getItemAt(i);
+                if (Objects.equals(p, professorObj)) {
+                    cmbProfessor.setSelectedIndex(i);
+                    encontrou = true;
+                    break;
+                }
             }
-        }
-        if (!encontrou) cmbProfessor.setSelectedIndex(-1);
-                
-            txtId.setEditable(false); // evita alteração do ID
+            if (!encontrou) cmbProfessor.setSelectedIndex(-1);
+
+            txtId.setEditable(false);
+            txtData.setEditable(false);
+
+            atualizarControlesAulaSelecionada();
         }
     }//GEN-LAST:event_tabelaAulasMouseClicked
 
@@ -300,11 +306,11 @@ public class AulaView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "ID inválido.");
             return;
         }
+       
         Turma turma = (Turma) cmbTurma.getSelectedItem();
         String dataStr = txtData.getText().trim();
         String horaInicioStr = txtHoraInicio.getText().trim();
         String horaFimStr = txtHoraFim.getText().trim();
-        Professor professor = (Professor) cmbProfessor.getSelectedItem();
 
         LocalDate data;
         LocalTime horaInicio, horaFim;
@@ -316,6 +322,27 @@ public class AulaView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Data ou hora inválidas. Use os formatos corretos.");
             return;
         }
+
+        // Validação de intervalo de datas
+        if (data.isBefore(turma.getDataInicio()) || data.isAfter(turma.getDataFim())) {
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            JOptionPane.showMessageDialog(this, 
+                "A data da aula deve estar entre o início (" 
+                + turma.getDataInicio().format(fmt) +
+                ") e o fim (" +
+                turma.getDataFim().format(fmt) + 
+                ") da turma.");
+            return;
+        }
+        
+        // Validação: hora de início deve ser antes da hora de fim
+        if (!horaInicio.isBefore(horaFim)) {
+            JOptionPane.showMessageDialog(this, "A hora de início deve ser menor que a hora de fim.");
+            return;
+        }
+        
+        // Professor só é atribuído depois!
+        Professor professor = null;
 
         String resultado = aulaController.inserirAula(id, turma, data, horaInicio, horaFim, professor);
         JOptionPane.showMessageDialog(this, resultado);
@@ -333,11 +360,15 @@ public class AulaView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "ID inválido.");
             return;
         }
+        
         Turma turma = (Turma) cmbTurma.getSelectedItem();
+        if (turma == null) {
+            JOptionPane.showMessageDialog(this, "Selecione uma turma.");
+            return;
+        }
         String dataStr = txtData.getText().trim();
         String horaInicioStr = txtHoraInicio.getText().trim();
         String horaFimStr = txtHoraFim.getText().trim();
-        Professor professor = (Professor) cmbProfessor.getSelectedItem();
 
         LocalDate data;
         LocalTime horaInicio, horaFim;
@@ -349,6 +380,15 @@ public class AulaView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Data ou hora inválidas. Use os formatos corretos.");
             return;
         }
+        
+        // Validação: hora de início deve ser antes da hora de fim
+        if (!horaInicio.isBefore(horaFim)) {
+            JOptionPane.showMessageDialog(this, "A hora de início deve ser menor que a hora de fim.");
+            return;
+        }
+        
+        // Professor só é atribuído depois!
+        Professor professor = null;
 
         String resultado = aulaController.atualizarAula(id, turma, data, horaInicio, horaFim, professor);
         JOptionPane.showMessageDialog(this, resultado);
@@ -363,11 +403,15 @@ public class AulaView extends javax.swing.JFrame {
         int linha = tabelaAulas.getSelectedRow();
         if (linha != -1) {
             int id = (int) tabelaAulas.getValueAt(linha, 0);
-            String resultado = aulaController.excluirAula(id);
-            JOptionPane.showMessageDialog(this, resultado);
-            if (resultado.contains("sucesso")) {
-                atualizarTabela();
-                limparCampos();
+            int confirm = JOptionPane.showConfirmDialog(this, "Deseja excluir o aluno selecionado?",
+                    "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                String resultado = aulaController.excluirAula(id);
+                JOptionPane.showMessageDialog(this, resultado);
+                if (resultado.contains("sucesso")) {
+                    atualizarTabela();
+                    limparCampos();
+                }
             }
         } else {
             JOptionPane.showMessageDialog(this, "Selecione uma aula para excluir.");
@@ -378,9 +422,9 @@ public class AulaView extends javax.swing.JFrame {
         limparCampos();
     }//GEN-LAST:event_btnLimparActionPerformed
 
-    private void btnVoltar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltar1ActionPerformed
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose(); // Fecha a janela atual
-    }//GEN-LAST:event_btnVoltar1ActionPerformed
+    }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnAtribuirProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtribuirProfessorActionPerformed
         int linha = tabelaAulas.getSelectedRow();
@@ -388,12 +432,38 @@ public class AulaView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Selecione uma aula na tabela!");
             return;
         }
+
+        String dataStr = tabelaAulas.getValueAt(linha, 1).toString();
+        String horaInicioStr = tabelaAulas.getValueAt(linha, 2).toString();
+        String horaFimStr = tabelaAulas.getValueAt(linha, 3).toString();
+        LocalDate dataAula = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalTime horaInicioAula = LocalTime.parse(horaInicioStr, DateTimeFormatter.ofPattern("HH:mm"));
+        LocalTime horaFimAula = LocalTime.parse(horaFimStr, DateTimeFormatter.ofPattern("HH:mm"));
+        LocalDate hoje = LocalDate.now();
+        LocalTime agora = LocalTime.now();
+        boolean aulaJaIniciou = dataAula.isBefore(hoje)
+                || (dataAula.isEqual(hoje) && !horaInicioAula.isAfter(agora));
+        if (!aulaJaIniciou) {
+            JOptionPane.showMessageDialog(this, "Só é possível atribuir professor na hora do início da aula.");
+            return;
+        }
+
         int id = (int) tabelaAulas.getValueAt(linha, 0);
         Professor professor = (Professor) cmbProfessor.getSelectedItem();
         if (professor == null) {
             JOptionPane.showMessageDialog(this, "Selecione um professor para atribuir!");
             return;
         }
+
+        // Verifica conflito de horário
+        boolean disponivel = aulaController.professorDisponivel(
+            professor, dataAula, horaInicioAula, horaFimAula, id
+        );
+        if (!disponivel) {
+            JOptionPane.showMessageDialog(this, "Conflito de horário: o professor já possui uma aula nesse horário.");
+            return;
+        }
+
         String resultado = aulaController.atualizarProfessor(id, professor);
         JOptionPane.showMessageDialog(this, resultado);
         if (resultado.contains("sucesso")) {
@@ -408,7 +478,28 @@ public class AulaView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Selecione uma aula na tabela!");
             return;
         }
+
+        String dataStr = tabelaAulas.getValueAt(linha, 1).toString();
+        String horaInicioStr = tabelaAulas.getValueAt(linha, 2).toString();
+        LocalDate dataAula = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalTime horaInicioAula = LocalTime.parse(horaInicioStr, DateTimeFormatter.ofPattern("HH:mm"));
+        LocalDate hoje = LocalDate.now();
+        LocalTime agora = LocalTime.now();
+        boolean aulaJaIniciou = dataAula.isBefore(hoje)
+                || (dataAula.isEqual(hoje) && !horaInicioAula.isAfter(agora));
+        if (aulaJaIniciou) {
+            JOptionPane.showMessageDialog(this, "Só é possível adiar aulas que ainda não começaram.");
+            return;
+        }
+
         int id = (int) tabelaAulas.getValueAt(linha, 0);
+
+        Turma turma = (Turma) tabelaAulas.getValueAt(linha, 4);
+        if (turma == null) {
+            JOptionPane.showMessageDialog(this, "Erro ao identificar a turma da aula.");
+            return;
+        }
+
         String novaDataStr = JOptionPane.showInputDialog(this, "Nova data para a aula (dd/MM/yyyy):");
         if (novaDataStr == null) return;
         LocalDate novaData;
@@ -418,6 +509,25 @@ public class AulaView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Data inválida.");
             return;
         }
+
+        // Validação dupla
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        if (novaData.isBefore(dataAula)) {
+            JOptionPane.showMessageDialog(this,
+                "A nova data não pode ser menor que a data original da aula: " +
+                dataAula.format(fmt));
+            return;
+        }
+        if (novaData.isBefore(turma.getDataInicio()) || novaData.isAfter(turma.getDataFim())) {
+            JOptionPane.showMessageDialog(this, 
+                "A nova data da aula deve estar entre o início (" 
+                + turma.getDataInicio().format(fmt) +
+                ") e o fim (" +
+                turma.getDataFim().format(fmt) + 
+                ") da turma.");
+            return;
+        }
+
         String resultado = aulaController.atualizarData(id, novaData);
         JOptionPane.showMessageDialog(this, resultado);
         if (resultado.contains("sucesso")) {
@@ -458,7 +568,7 @@ public class AulaView extends javax.swing.JFrame {
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLimpar;
-    private javax.swing.JButton btnVoltar1;
+    private javax.swing.JButton btnVoltar;
     private javax.swing.JComboBox cmbProfessor;
     private javax.swing.JComboBox cmbTurma;
     private javax.swing.JLabel jLabel1;
@@ -475,12 +585,15 @@ public class AulaView extends javax.swing.JFrame {
     private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 
-    private void carregarProfessores() {
-        List<Professor> professores = professorController.listarTodosProfessores();
+    private void carregarProfessoresParaTurma(Turma turma) {
         cmbProfessor.removeAllItems();
-        cmbProfessor.addItem(null);
+        cmbProfessor.addItem(null); // Pode manter para caso de "sem professor"
+        if (turma == null) return;
+        List<Professor> professores = professorController.listarTodosProfessores();
         for (Professor p : professores) {
-            cmbProfessor.addItem(p);
+            if (p.getLinguas().contains(turma.getLingua())) {
+                cmbProfessor.addItem(p);
+            }
         }
     }
 
@@ -509,6 +622,7 @@ public class AulaView extends javax.swing.JFrame {
         }
 
         tabelaAulas.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
+        limparCampos();
     }
     
     private void limparCampos() {
@@ -517,7 +631,33 @@ public class AulaView extends javax.swing.JFrame {
         txtHoraInicio.setText("");
         txtHoraFim.setText("");
         cmbProfessor.setSelectedIndex(-1);
+        cmbProfessor.setEnabled(false);
         cmbTurma.setSelectedIndex(-1);
         txtId.setEditable(true);
+        txtData.setEditable(true);
+        btnAtribuirProfessor.setEnabled(false);
+        btnAdiarAula.setEnabled(false);
+    }
+    
+    private void atualizarControlesAulaSelecionada() {
+        int linha = tabelaAulas.getSelectedRow();
+        if (linha == -1) return;
+
+        String dataStr = tabelaAulas.getValueAt(linha, 1).toString();
+        String horaInicioStr = tabelaAulas.getValueAt(linha, 2).toString();
+
+        LocalDate dataAula = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalTime horaInicioAula = LocalTime.parse(horaInicioStr, DateTimeFormatter.ofPattern("HH:mm"));
+
+        LocalDate hoje = LocalDate.now();
+        LocalTime agora = LocalTime.now();
+
+        boolean aulaJaIniciou = dataAula.isBefore(hoje)
+                || (dataAula.isEqual(hoje) && !horaInicioAula.isAfter(agora));
+
+        btnAtribuirProfessor.setEnabled(aulaJaIniciou);
+        cmbProfessor.setEnabled(aulaJaIniciou);
+
+        btnAdiarAula.setEnabled(!aulaJaIniciou);
     }
 }

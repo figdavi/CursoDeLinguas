@@ -190,7 +190,7 @@ public class TurmaDAO {
     }
 
     // Buscar nota final de um aluno em uma turma
-    public Double buscarNotaFinal(int turmaId, int alunoMatricula) {
+  /*public Double buscarNotaFinal(int turmaId, int alunoMatricula) {
         String sql = "SELECT nota FROM nota_final WHERE turma_id = ? AND aluno_matricula = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -204,7 +204,7 @@ public class TurmaDAO {
             System.out.println("Erro ao buscar nota final: " + e.getMessage());
         }
         return null;
-    }
+    }   */
 
     // Listar todas as notas finais da turma (Map<Aluno, Nota>)
     public Map<Integer, Double> listarNotasFinais(int turmaId) {

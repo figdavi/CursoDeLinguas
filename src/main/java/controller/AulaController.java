@@ -87,4 +87,17 @@ public class AulaController {
         boolean ok = aulaDAO.excluir(id);
         return ok ? "Aula excluída com sucesso!" : "Erro ao excluir aula (ID não encontrado).";
     }
+    
+    public boolean professorDisponivel(Professor professor, LocalDate data, LocalTime horaInicio, LocalTime horaFim, Integer idAulaAtual) {
+        List<Aula> aulas = aulaDAO.listarAulasDoProfessorNoDia(professor.getMatricula(), data);
+        for (Aula a : aulas) {
+            if (idAulaAtual != null && a.getId() == idAulaAtual) continue; // ignora a própria aula se estiver editando
+            // Verifica sobreposição de horário
+            if (horaInicio.isBefore(a.getHoraFim()) && horaFim.isAfter(a.getHoraInicio())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

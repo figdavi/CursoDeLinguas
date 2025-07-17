@@ -87,10 +87,10 @@ public class TurmaController {
         return ok ? "Nota registrada com sucesso!" : "Erro ao registrar nota.";
     }
 
-    public Double buscarNotaFinal(int turmaId, int alunoMatricula) {
+  /* public Double buscarNotaFinal(int turmaId, int alunoMatricula) {
         if (turmaId <= 0 || alunoMatricula <= 0) return null;
         return turmaDAO.buscarNotaFinal(turmaId, alunoMatricula);
-    }
+    } */
 
     public Map<Integer, Double> listarNotasFinais(int turmaId) {
         if (turmaId <= 0) return Map.of();

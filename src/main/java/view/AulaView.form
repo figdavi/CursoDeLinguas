@@ -62,7 +62,7 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btnLimpar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="btnVoltar1" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnVoltar" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="jScrollPane2" min="-2" pref="620" max="-2" attributes="0"/>
                   </Group>
@@ -110,7 +110,7 @@
                   <Component id="btnExcluir" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnLimpar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnAtualizar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnVoltar1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnVoltar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="25" max="32767" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="186" max="-2" attributes="0"/>
@@ -247,12 +247,12 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLimparActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnVoltar1">
+    <Component class="javax.swing.JButton" name="btnVoltar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Voltar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVoltar1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVoltarActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnAdiarAula">
