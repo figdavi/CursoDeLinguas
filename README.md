@@ -12,22 +12,22 @@
 - [x] AulaView não retorna valores para cmbBox ao clicar na tabela
 - [ ] Adicionar Relatorio Anual
 - [x] Garantir que data da aula está entre dataInicio e dataFim da turma
-- [ ] Adicionar um meio do gerente alterar o gastoFixoHoraAula?
+- [ ] ~~Adicionar um meio do gerente alterar o gastoFixoHoraAula?~~
 	- Necessitaria de salvar o gastoFixoHoraAula com a data no db
 - [ ] setTitle em Views
-- [ ] Melhorar interface das Views
-- [ ] Transformar Usuario em Enum em MenuPrincipalView
-- [ ] Testar essa parte de matricular aluno na turma, e se ele vai aparecer na tabela da NotaFinalView
+- [ ] ~~Melhorar interface das Views~~
+- [ ] ~~Transformar Usuario em Enum em MenuPrincipalView~~
+- [x] Testar essa parte de matricular aluno na turma, e se ele vai aparecer na tabela da NotaFinalView
 - [x] Review TurmaController
-- [ ] Máscaras para hora, data e matrícula
-- [ ] Substituir excluir+inserir por update nos DAOs
-- [ ] Validar dados de input(email, telefone, etc)
-- [ ] Substituir as opções das Views por métodos ao inves de strings
+- [x] Máscaras para hora, data e matrícula
+- [ ] ~~Substituir excluir+inserir por update nos DAOs~~
+- [ ] ~~Validar dados de input(email, telefone, etc)~~
+- [ ] ~~Substituir as opções das Views por métodos ao inves de strings~~
 - [x] Review exceptions
-- [ ] Review "// TODO" nas Views
+- [ ] ~~Review "// TODO" nas Views~~
 - [x] .gitignore
 - [x] Colocar feedback para as funções dos views
 - [ ] Colocar ID do sqlite para autoincrement
 - [x] Views dos casos de uso
-- [ ] ORM
+- [ ] ~~ORM~~
 
